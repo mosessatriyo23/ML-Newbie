@@ -81,6 +81,15 @@ def _format_error(exc):
     }
 
 
+def _raises(fn, *args, **kwargs):
+    """Untuk test: mengembalikan (nama_exception, pesan) jika fn memunculkan error, selain itu None."""
+    try:
+        fn(*args, **kwargs)
+    except Exception as exc:  # noqa: BLE001
+        return (type(exc).__name__, str(exc))
+    return None
+
+
 def run_user_code(code, tests_json=None, uses_matplotlib=False):
     import json
 
@@ -118,6 +127,7 @@ def run_user_code(code, tests_json=None, uses_matplotlib=False):
         env["_lines"] = [ln.rstrip() for ln in output.strip("\n").split("\n")] if output.strip() else []
         env["_code"] = code
         env["_error"] = error["type"] if error else None
+        env["_raises"] = _raises
         sink = io.StringIO()
         for t in tests:
             sys.stdout = sink

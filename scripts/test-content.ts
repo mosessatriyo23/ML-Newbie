@@ -91,9 +91,11 @@ async function checkCodeExercise(where: string, ex: CodeExercise) {
     if (ab.length) fail(`${where} alt#${i + 1}`, `alternatif gagal: ${ab.map((b) => b.desc).join("; ")} ${a.error?.traceback ?? ""}`);
     else ok();
   }
-  const st = await run(ex.starter, ex.tests);
-  if ((st.tests ?? []).every((t) => t.passed)) fail(where, "starter sudah lulus semua test (soal terlalu mudah / test lemah)");
-  else ok();
+  if (!ex.starterLoops) {
+    const st = await run(ex.starter, ex.tests);
+    if ((st.tests ?? []).every((t) => t.passed)) fail(where, "starter sudah lulus semua test (soal terlalu mudah / test lemah)");
+    else ok();
+  }
   if (ex.hints.length !== 3) fail(where, "hint harus 3 tingkat");
 }
 

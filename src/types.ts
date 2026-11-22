@@ -68,7 +68,8 @@ export interface Mistake {
 
 /** Test case Python: `expr` adalah ekspresi Python yang harus bernilai True.
  *  Variabel khusus: `_output` (teks yang dicetak), `_lines` (list baris output tanpa spasi ujung),
- *  `_code` (kode sumber pengguna). */
+ *  `_code` (kode sumber pengguna), `_error` (nama exception atau None),
+ *  `_raises(fn, *args)` → (nama_exception, pesan) atau None. */
 export interface PyTest {
   desc: string;
   expr: string;
@@ -95,6 +96,8 @@ export interface CodeExercise extends ExerciseBase {
   tests: PyTest[];
   /** Solusi alternatif yang juga benar — diuji otomatis agar penilaian tidak sekadar mencocokkan teks. */
   alternatives?: string[];
+  /** Kode awal sengaja berupa infinite loop (soal debugging) — tidak dijalankan oleh test otomatis. */
+  starterLoops?: boolean;
 }
 
 export interface ArrangeExercise extends ExerciseBase {
