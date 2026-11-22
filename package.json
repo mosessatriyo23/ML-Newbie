@@ -13,6 +13,7 @@
     "gen:outputs": "node --experimental-strip-types --no-warnings scripts/gen-outputs.ts",
     "test:links": "node --experimental-strip-types --no-warnings scripts/check-links.ts",
     "test:e2e": "node scripts/e2e.mjs",
+    "test:contrast": "node scripts/contrast-check.mjs",
     "build:selfhosted": "bash scripts/build-selfhosted.sh"
   },
   "dependencies": {

@@ -260,7 +260,7 @@ function ExamRunner({ exam }: { exam: ExamDef }) {
       <div className="mb-4 flex flex-wrap gap-1">
         {items.map((x, i) => {
           const done = x.q ? answers[x.key] !== undefined && answers[x.key] !== "" : codeResults[x.key] !== undefined;
-          return <button key={x.key} type="button" onClick={() => setIdx(i)} className={`h-8 w-8 rounded text-xs font-semibold ${i === idx ? "bg-brand-600 text-white" : done ? "bg-brand-100 text-brand-800 dark:bg-brand-900/50 dark:text-brand-200" : "bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-300"}`}>{i + 1}</button>;
+          return <button key={x.key} type="button" onClick={() => setIdx(i)} className={`h-8 w-8 rounded text-xs font-semibold ${i === idx ? "bg-brand-700 text-white" : done ? "bg-brand-100 text-brand-800 dark:bg-brand-900/50 dark:text-brand-200" : "bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-300"}`}>{i + 1}</button>;
         })}
       </div>
       {it && (

@@ -61,7 +61,7 @@ export function CodeRunner({ code, onCodeChange, onReset, title = "Try It Yourse
         <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
           <span className="h-2.5 w-2.5 rounded-full bg-brand-500" />
           {title}
-          <span className="hidden text-xs font-normal text-slate-400 sm:inline">
+          <span className="hidden text-xs font-normal text-slate-500 dark:text-slate-400 sm:inline">
             {runtime.status === "ready" || runtime.status === "running" ? `Python ${runtime.pythonVersion ?? ""} · Pyodide ${runtime.pyodideVersion ?? ""}` : runtime.status === "loading" ? "Memuat runtime…" : runtime.status === "error" ? "Runtime gagal dimuat" : "Python (Pyodide) — dimuat saat Run pertama"}
           </span>
         </div>

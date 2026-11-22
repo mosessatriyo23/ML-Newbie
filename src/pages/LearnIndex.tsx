@@ -39,7 +39,7 @@ export default function LearnIndex() {
           return (
             <section key={m.id} id={m.id} className="card scroll-mt-20 p-5" data-testid={`module-${m.id}`}>
               <div className="flex flex-wrap items-start gap-3">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand-600 font-bold text-white">{m.number}</div>
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand-700 font-bold text-white">{m.number}</div>
                 <div className="min-w-0 flex-1">
                   <h2 className="text-lg font-bold">Module {m.number} — {m.title}</h2>
                   <p className="text-sm text-slate-500">{m.description}</p>
@@ -54,8 +54,8 @@ export default function LearnIndex() {
                   const a = isAvailable(l.id);
                   return (
                     <li key={l.id}>
-                      <Link to={`/learn/${l.id}`} className={`flex items-center gap-2 rounded-md px-2 py-1 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 ${a ? "" : "text-slate-400"}`}>
-                        <span className="w-5 text-right text-xs text-slate-400">{i + 1}</span>
+                      <Link to={`/learn/${l.id}`} className={`flex items-center gap-2 rounded-md px-2 py-1 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 ${a ? "" : "text-slate-500 dark:text-slate-400"}`}>
+                        <span className="w-5 text-right text-xs text-slate-500 dark:text-slate-400">{i + 1}</span>
                         {s.completedLessons[l.id] ? <CircleCheck size={14} className="text-brand-500" /> : !a ? <Lock size={12} /> : <span className="h-3.5 w-3.5 rounded-full border border-slate-300" />}
                         <span className="flex-1">{l.title}</span>
                         {l.difficulty !== "beginner" && <span className="badge badge-purple">{DIFFICULTY_LABEL[l.difficulty]}</span>}

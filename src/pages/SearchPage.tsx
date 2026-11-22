@@ -29,7 +29,7 @@ export default function SearchPage() {
     <div className="mx-auto max-w-4xl px-4 py-6">
       <h1 className="text-3xl font-bold">Search</h1>
       <form className="relative mt-4" onSubmit={(e) => { e.preventDefault(); setParams({ q }); }} role="search">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400" />
         <input className="input pl-9" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Cari materi, sintaks, atau konsep…" autoFocus aria-label="Kata kunci" />
       </form>
       {query && (

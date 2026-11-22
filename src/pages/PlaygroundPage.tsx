@@ -131,7 +131,7 @@ export default function PlaygroundPage() {
                 {files.map((f) => (
                   <li key={f.name} className="flex items-center gap-2">
                     <span className="flex-1 truncate font-mono text-xs">{f.name}</span>
-                    <span className="text-[11px] text-slate-400">{(f.size / 1024).toFixed(1)} KB</span>
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400">{(f.size / 1024).toFixed(1)} KB</span>
                     <button type="button" className="icon-btn" aria-label={`Download ${f.name}`} onClick={() => downloadFile(f.name)}><Download size={13} /></button>
                   </li>
                 ))}

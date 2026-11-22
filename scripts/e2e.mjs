@@ -101,6 +101,7 @@ await step("Error Python ditampilkan dengan penjelasan", async () => {
   const editor = tryit.locator(".cm-content");
   await editor.click();
   await page.keyboard.press("Control+A");
+  await page.keyboard.press("Delete");
   await page.keyboard.type('Print("Halo")');
   await tryit.getByTestId("run-btn").click();
   await tryit.getByTestId("python-error").waitFor({ timeout: 60000 });
@@ -114,6 +115,7 @@ await step("Latihan: jawaban salah → Incorrect + Error Notebook", async () => 
   const editor = ex.locator(".cm-content");
   await editor.click();
   await page.keyboard.press("Control+A");
+  await page.keyboard.press("Delete");
   await page.keyboard.type('print("Halo ML")');
   await ex.getByTestId("check-btn").click();
   await ex.getByTestId("feedback-incorrect").waitFor({ timeout: 60000 });
@@ -131,6 +133,7 @@ await step("Latihan: jawaban benar → Correct", async () => {
   const editor = ex.locator(".cm-content");
   await editor.click();
   await page.keyboard.press("Control+A");
+  await page.keyboard.press("Delete");
   await page.keyboard.type('print("Halo, Machine Learning!")');
   await ex.getByTestId("check-btn").click();
   await ex.getByTestId("feedback-correct").waitFor({ timeout: 60000 });
@@ -142,6 +145,7 @@ await step("Solusi alternatif yang benar diterima (sep='\\n')", async () => {
   await ex.scrollIntoViewIfNeeded();
   await ex.locator(".cm-content").click();
   await page.keyboard.press("Control+A");
+  await page.keyboard.press("Delete");
   await page.keyboard.insertText('print("Nama: Sari", "Jurusan: Informatika", "Target: Machine Learning Engineer", sep="\\n")');
   await ex.getByTestId("check-btn").click();
   await ex.getByTestId("feedback-correct").waitFor({ timeout: 60000 });
@@ -193,6 +197,7 @@ await step("Stop menghentikan infinite loop & runtime pulih", async () => {
   await tryit.scrollIntoViewIfNeeded();
   await tryit.locator(".cm-content").click();
   await page.keyboard.press("Control+A");
+  await page.keyboard.press("Delete");
   await page.keyboard.insertText("i = 0\nwhile True:\n    i += 1");
   await tryit.getByTestId("run-btn").click();
   await tryit.getByTestId("stop-btn").waitFor();
@@ -203,6 +208,7 @@ await step("Stop menghentikan infinite loop & runtime pulih", async () => {
   await page.waitForFunction(() => /dihentikan/i.test(document.querySelector("#tryit [data-testid=output-panel]").textContent));
   await tryit.locator(".cm-content").click();
   await page.keyboard.press("Control+A");
+  await page.keyboard.press("Delete");
   await page.keyboard.insertText('print("hidup lagi")');
   await tryit.getByTestId("run-btn").click();
   await waitDone("#tryit [data-testid=output-panel]");
@@ -245,6 +251,7 @@ await step("Playground: NumPy/Pandas/Matplotlib menghasilkan grafik", async () =
 await step("Seaborn & scikit-learn berjalan di browser", async () => {
   await page.locator(".cm-content").click();
   await page.keyboard.press("Control+A");
+  await page.keyboard.press("Delete");
   await page.keyboard.insertText(
     'import pandas as pd\nimport seaborn as sns\nimport matplotlib.pyplot as plt\nfrom sklearn.linear_model import LogisticRegression\ndf = pd.read_csv("iris.csv")\nm = LogisticRegression(max_iter=500).fit(df.drop(columns="species"), df["species"])\nprint("sklearn ok", round(m.score(df.drop(columns="species"), df["species"]), 2))\nsns.boxplot(data=df, x="species", y="petal_length")\nplt.show()',
   );
@@ -257,6 +264,7 @@ await step("Upload CSV ke Playground dan dibaca pandas", async () => {
   await page.getByText("✓ upload_test.csv tersedia").waitFor({ timeout: 60000 });
   await page.locator(".cm-content").click();
   await page.keyboard.press("Control+A");
+  await page.keyboard.press("Delete");
   await page.keyboard.insertText('import pandas as pd\nprint(pd.read_csv("upload_test.csv")["b"].sum())');
   await page.getByTestId("run-btn").click();
   await page.waitForFunction(() => document.querySelector("[data-testid=stdout]")?.textContent.trim() === "6", null, { timeout: 60000 });

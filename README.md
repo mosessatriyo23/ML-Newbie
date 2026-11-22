@@ -44,6 +44,9 @@ NODE_USE_ENV_PROXY=1 npm run test:links
 # solusi alternatif, kuis, persistensi setelah refresh, dark mode, ujian, upload CSV, mobile.
 npm run build && npx vite preview --port 4173 &
 npm run test:e2e
+
+# Kontras teks WCAG AA (4.5:1 teks normal, 3:1 teks besar) di 17 halaman, tema terang & gelap.
+npm run test:contrast
 ```
 
 Output cheat sheet & workflow dihasilkan dari eksekusi nyata: `node --experimental-strip-types scripts/gen-outputs.ts`.

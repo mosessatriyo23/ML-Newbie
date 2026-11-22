@@ -43,7 +43,7 @@ export function OutputPanel({ out, onStop }: { out: OutputState; onStop?: () => 
         </span>
       </div>
       <div className="max-h-[420px] overflow-auto px-3 py-2 font-mono text-[13px] leading-relaxed">
-        {!hasContent && <div className="text-slate-500">Tekan ▶ Run (atau Ctrl+Enter) untuk menjalankan kode. Output akan tampil di sini.</div>}
+        {!hasContent && <div className="text-slate-400">Tekan ▶ Run (atau Ctrl+Enter) untuk menjalankan kode. Output akan tampil di sini.</div>}
         <div data-testid="stdout" className="contents">
         {out.chunks.map((c, i) => (
           <span key={i} className={c.kind === "stderr" ? "whitespace-pre-wrap text-amber-300" : c.kind === "info" ? "whitespace-pre-wrap text-sky-300" : "whitespace-pre-wrap text-slate-100"}>
@@ -52,7 +52,7 @@ export function OutputPanel({ out, onStop }: { out: OutputState; onStop?: () => 
         ))}
         </div>
         {out.status === "done" && out.chunks.length === 0 && !out.error && out.figures.length === 0 && (
-          <div className="text-slate-500">(Kode berjalan tanpa output. Gunakan print() untuk menampilkan hasil.)</div>
+          <div className="text-slate-400">(Kode berjalan tanpa output. Gunakan print() untuk menampilkan hasil.)</div>
         )}
         {out.error && (
           <div className="mt-2" data-testid="python-error">

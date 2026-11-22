@@ -10,7 +10,7 @@ import { todayStr, useStore } from "../engine/store";
 function Stat({ icon, label, value, sub }: { icon: React.ReactNode; label: string; value: string; sub?: string }) {
   return (
     <div className="stat">
-      <div className="flex items-center gap-2 text-slate-400">{icon}<span className="stat-label">{label}</span></div>
+      <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">{icon}<span className="stat-label">{label}</span></div>
       <div className="stat-value">{value}</div>
       {sub && <div className="text-xs text-slate-500">{sub}</div>}
     </div>
@@ -37,7 +37,7 @@ export default function Dashboard() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6" data-testid="dashboard">
       <section className="card overflow-hidden">
-        <div className="flex flex-col gap-4 bg-gradient-to-br from-brand-600 to-emerald-800 p-6 text-white md:flex-row md:items-center">
+        <div className="flex flex-col gap-4 bg-brand-800 bg-gradient-to-br from-brand-700 to-emerald-900 p-6 text-white md:flex-row md:items-center">
           <div className="flex-1">
             <h1 className="text-2xl font-bold text-white">{greet}{s.prefs.userName ? `, ${s.prefs.userName}` : ""}! 👋</h1>
             <p className="mt-1 text-emerald-50">
@@ -169,7 +169,7 @@ export default function Dashboard() {
                 <span className="badge badge-slate">{h.type}</span>
                 <span className="flex-1 truncate">{h.title}</span>
                 {h.detail && <span className={`text-xs ${h.detail === "Salah" ? "text-red-500" : "text-slate-500"}`}>{h.detail}</span>}
-                <span className="text-xs text-slate-400">{new Date(h.at).toLocaleString("id-ID", { dateStyle: "short", timeStyle: "short" })}</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">{new Date(h.at).toLocaleString("id-ID", { dateStyle: "short", timeStyle: "short" })}</span>
               </li>
             ))}
           </ul>

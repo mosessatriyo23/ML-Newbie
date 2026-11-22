@@ -264,8 +264,8 @@ function ArrangeBody(props: ExProps & { ex: ArrangeExercise }) {
             }}
             className="flex items-center gap-2 rounded-md border border-slate-200 bg-white px-2 py-1.5 font-mono text-[13px] dark:border-slate-700 dark:bg-slate-900"
           >
-            <GripVertical size={14} className="shrink-0 cursor-grab text-slate-400" />
-            <span className="w-5 shrink-0 text-right text-xs text-slate-400">{idx + 1}</span>
+            <GripVertical size={14} className="shrink-0 cursor-grab text-slate-500 dark:text-slate-400" />
+            <span className="w-5 shrink-0 text-right text-xs text-slate-500 dark:text-slate-400">{idx + 1}</span>
             <pre className="flex-1 overflow-x-auto whitespace-pre">{o.l}</pre>
             <button type="button" className="icon-btn" aria-label="Naikkan baris" onClick={() => move(idx, idx - 1)} disabled={idx === 0}>
               <ArrowUp size={14} />

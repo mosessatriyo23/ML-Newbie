@@ -21,7 +21,7 @@ export default function CheatSheetsPage() {
       <h1 className="text-3xl font-bold">Cheat Sheets</h1>
       <p className="mt-1 text-slate-500">{total} sintaks dalam {CHEATSHEETS.length} kategori. Setiap contoh yang memiliki output telah dijalankan dan diverifikasi otomatis.</p>
       <div className="relative mt-4">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400" />
         <input className="input pl-9" placeholder="Cari fungsi atau kegunaan, misal: read_csv, missing, scaling…" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Cari cheat sheet" data-testid="cheat-search" />
       </div>
       <div className="mt-3 flex flex-wrap gap-1.5">
@@ -46,7 +46,7 @@ export default function CheatSheetsPage() {
               <div key={it.name} className="card p-4" data-testid="cheat-item">
                 <div className="flex items-start justify-between gap-2">
                   <div className="font-semibold">{it.name}</div>
-                  <CopyButton text={it.syntax} className="btn-ghost !text-slate-500" />
+                  <CopyButton text={it.syntax} className="btn-ghost" />
                 </div>
                 <pre className="mt-2 overflow-x-auto rounded bg-slate-900 px-3 py-2 font-mono text-[12.5px] text-slate-100">{it.syntax}</pre>
                 <div className="mt-2 text-sm"><b>Kegunaan:</b> {it.use}</div>

@@ -6,7 +6,7 @@ export function DataTable({ header, rows }: { header: string[]; rows: string[][]
       <table className="data-table">
         <thead>
           <tr>
-            <th className="text-slate-400">#</th>
+            <th className="text-slate-500 dark:text-slate-400">#</th>
             {header.map((h) => (
               <th key={h}>{h}</th>
             ))}
@@ -15,7 +15,7 @@ export function DataTable({ header, rows }: { header: string[]; rows: string[][]
         <tbody>
           {rows.map((r, i) => (
             <tr key={i}>
-              <td className="text-slate-400">{i}</td>
+              <td className="text-slate-500 dark:text-slate-400">{i}</td>
               {r.map((c, j) => (
                 <td key={j}>{c === "" ? <span className="text-red-400">NaN</span> : c}</td>
               ))}

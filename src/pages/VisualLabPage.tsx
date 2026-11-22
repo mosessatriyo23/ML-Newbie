@@ -12,9 +12,9 @@ export default function VisualLabPage() {
         <ul className="flex gap-1 overflow-x-auto lg:flex-col">
           {VISUAL_LAB.map((v) => (
             <li key={v.key}>
-              <button type="button" onClick={() => setSel(v.key)} className={`w-full whitespace-nowrap rounded-md px-3 py-2 text-left text-sm ${sel === v.key ? "bg-brand-600 text-white" : "hover:bg-slate-100 dark:hover:bg-slate-800"}`}>
+              <button type="button" onClick={() => setSel(v.key)} className={`w-full whitespace-nowrap rounded-md px-3 py-2 text-left text-sm ${sel === v.key ? "bg-brand-700 text-white" : "hover:bg-slate-100 dark:hover:bg-slate-800"}`}>
                 <div className="font-medium">{v.title}</div>
-                <div className={`text-xs ${sel === v.key ? "text-white/80" : "text-slate-500"}`}>{v.module}</div>
+                <div className={`text-xs ${sel === v.key ? "text-white/90" : "text-slate-500"}`}>{v.module}</div>
               </button>
             </li>
           ))}

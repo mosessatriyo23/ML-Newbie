@@ -33,12 +33,12 @@ export default function WorkflowPage() {
             <button
               type="button"
               onClick={() => setSel(s.id)}
-              className={`rounded-lg border px-2.5 py-1.5 text-left text-xs font-medium transition ${s.id === step.id ? "border-brand-600 bg-brand-600 text-white shadow" : s.phase === "data" ? "border-sky-200 bg-sky-50 text-sky-900 hover:border-sky-400 dark:border-sky-900 dark:bg-sky-950/40 dark:text-sky-100" : s.phase === "model" ? "border-violet-200 bg-violet-50 text-violet-900 hover:border-violet-400 dark:border-violet-900 dark:bg-violet-950/40 dark:text-violet-100" : "border-emerald-200 bg-emerald-50 text-emerald-900 hover:border-emerald-400 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-100"}`}
+              className={`rounded-lg border px-2.5 py-1.5 text-left text-xs font-medium transition ${s.id === step.id ? "border-brand-600 bg-brand-700 text-white shadow" : s.phase === "data" ? "border-sky-200 bg-sky-50 text-sky-900 hover:border-sky-400 dark:border-sky-900 dark:bg-sky-950/40 dark:text-sky-100" : s.phase === "model" ? "border-violet-200 bg-violet-50 text-violet-900 hover:border-violet-400 dark:border-violet-900 dark:bg-violet-950/40 dark:text-violet-100" : "border-emerald-200 bg-emerald-50 text-emerald-900 hover:border-emerald-400 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-100"}`}
               data-testid={`wf-step-${s.n}`}
             >
               <span className="opacity-70">{s.n}.</span> {s.title}
             </button>
-            {k < WORKFLOW_STEPS.length - 1 && <ArrowRight size={13} className="text-slate-400" />}
+            {k < WORKFLOW_STEPS.length - 1 && <ArrowRight size={13} className="text-slate-500 dark:text-slate-400" />}
           </li>
         ))}
       </ol>
@@ -50,7 +50,7 @@ export default function WorkflowPage() {
 
       {step && (
         <section className="card mt-6 p-5" data-testid="wf-detail">
-          <div className="text-xs font-semibold uppercase text-slate-400">Tahap {step.n} dari {WORKFLOW_STEPS.length}</div>
+          <div className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Tahap {step.n} dari {WORKFLOW_STEPS.length}</div>
           <h2 className="text-2xl font-bold">{step.title}</h2>
           <p className="mt-2">{step.goal}</p>
           <div className="mt-4 grid gap-3 md:grid-cols-3">
@@ -82,7 +82,7 @@ export default function WorkflowPage() {
               <span key={l}>
                 {k > 0 && " · "}
                 <Link to={`/learn/${l}`} className="text-brand-700 underline dark:text-brand-400">{lessonTitle(l)}</Link>
-                {!isAvailable(l) && <Lock size={11} className="ml-0.5 inline text-slate-400" />}
+                {!isAvailable(l) && <Lock size={11} className="ml-0.5 inline text-slate-500 dark:text-slate-400" />}
               </span>
             ))}
           </div>

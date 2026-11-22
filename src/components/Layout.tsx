@@ -40,7 +40,7 @@ function SearchBox({ onDone }: { onDone?: () => void }) {
   };
   return (
     <form onSubmit={submit} role="search" className="relative">
-      <Search size={15} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+      <Search size={15} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400" />
       <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Cari materi, fungsi…" className="input h-9 w-full py-1 pl-8 lg:w-52" aria-label="Cari" data-testid="search-input" />
     </form>
   );
@@ -58,7 +58,7 @@ function TopNav({ onMenu }: { onMenu: () => void }) {
           <PanelLeftOpen size={18} />
         </button>
         <Link to="/" className="flex shrink-0 items-center gap-2 font-bold text-slate-900 dark:text-white">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-700 text-white">
             <BrainCircuit size={18} />
           </span>
           <span className="hidden sm:inline">ML Academy</span>
@@ -131,7 +131,7 @@ export function CurriculumSidebar({ onNavigate }: { onNavigate?: () => void }) {
               {open ? <ChevronDown size={15} className="mt-0.5 shrink-0" /> : <ChevronRight size={15} className="mt-0.5 shrink-0" />}
               <span className="flex-1">
                 <span className="block font-semibold text-slate-800 dark:text-slate-100">
-                  <span className="text-slate-400">{m.number}</span> {m.title}
+                  <span className="text-slate-500 dark:text-slate-400">{m.number}</span> {m.title}
                 </span>
                 <span className="mt-1 flex items-center gap-2 text-[11px] text-slate-500">
                   {av.avail === 0 ? (
@@ -158,12 +158,12 @@ export function CurriculumSidebar({ onNavigate }: { onNavigate?: () => void }) {
                       <Link
                         to={`/learn/${l.id}`}
                         onClick={onNavigate}
-                        className={`flex items-center gap-2 rounded-md px-2 py-1 ${active ? "bg-brand-600 font-medium text-white" : avail ? "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800" : "text-slate-400 hover:bg-slate-100 dark:text-slate-500 dark:hover:bg-slate-800/60"} ${above && !active ? "opacity-60" : ""}`}
+                        className={`flex items-center gap-2 rounded-md px-2 py-1 ${active ? "bg-brand-700 font-medium text-white" : avail ? "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800" : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800/60"} ${above && !active ? "opacity-60" : ""}`}
                         aria-current={active ? "page" : undefined}
                       >
-                        {completed ? <CircleCheck size={14} className={active ? "text-white" : "text-brand-500"} /> : avail ? <Circle size={14} className="text-slate-300" /> : <Lock size={12} className="mx-[1px]" />}
+                        {completed ? <CircleCheck size={14} className={active ? "text-white" : "text-brand-500"} /> : avail ? <Circle size={14} className="text-slate-500" /> : <Lock size={12} className="mx-[1px]" />}
                         <span className="flex-1 truncate">{l.title}</span>
-                        {l.difficulty !== "beginner" && <span className={`text-[10px] font-semibold uppercase ${active ? "text-white/80" : "text-violet-500"}`}>{l.difficulty === "intermediate" ? "INT" : "ADV"}</span>}
+                        {l.difficulty !== "beginner" && <span className={`text-[10px] font-semibold uppercase ${active ? "text-white/90" : "text-violet-500"}`}>{l.difficulty === "intermediate" ? "INT" : "ADV"}</span>}
                       </Link>
                     </li>
                   );
@@ -193,7 +193,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <div className="mx-auto flex max-w-[1600px]">
         {withSidebar && !collapsed && (
           <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-72 shrink-0 overflow-y-auto border-r border-slate-200 bg-white lg:block dark:border-slate-800 dark:bg-slate-950" data-testid="sidebar">
-            <div className="flex items-center justify-between px-4 pt-3 text-xs font-semibold uppercase tracking-wide text-slate-400">
+            <div className="flex items-center justify-between px-4 pt-3 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
               Kurikulum
               <button type="button" className="icon-btn" onClick={() => setPrefs({ sidebarCollapsed: true })} aria-label="Sembunyikan sidebar">
                 <PanelLeftClose size={16} />

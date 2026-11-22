@@ -17,7 +17,7 @@ function Plot({ xd, yd, h = 260, children, onClick, xLabel, yLabel }: { xd: [num
   return (
     <svg
       viewBox={`0 0 ${w} ${h}`}
-      className="w-full max-w-[640px] select-none text-slate-400"
+      className="w-full max-w-[640px] select-none text-slate-500 dark:text-slate-400"
       role="img"
       onClick={(e) => {
         if (!onClick) return;

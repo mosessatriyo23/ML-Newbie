@@ -59,8 +59,8 @@ function Flashcards() {
           {ALL_LESSONS.map((l) => <option key={l.id} value={l.id}>{l.title}</option>)}
         </select>
         <div className="flex rounded-md border border-slate-300 p-0.5 dark:border-slate-600">
-          <button type="button" className={`rounded px-3 py-1 text-sm ${mode === "review" ? "bg-brand-600 text-white" : ""}`} onClick={() => setMode("review")}>Review</button>
-          <button type="button" className={`rounded px-3 py-1 text-sm ${mode === "memory" ? "bg-brand-600 text-white" : ""}`} onClick={() => setMode("memory")}>Memory Test (ketik jawaban)</button>
+          <button type="button" className={`rounded px-3 py-1 text-sm ${mode === "review" ? "bg-brand-700 text-white" : ""}`} onClick={() => setMode("review")}>Review</button>
+          <button type="button" className={`rounded px-3 py-1 text-sm ${mode === "memory" ? "bg-brand-700 text-white" : ""}`} onClick={() => setMode("memory")}>Memory Test (ketik jawaban)</button>
         </div>
         <span className="text-sm text-slate-500">{due.length} kartu jatuh tempo · {deck.length} di deck · {reviewedToday} direview hari ini</span>
       </div>
@@ -248,9 +248,9 @@ function AllExercises() {
           <ul className="mt-2 grid gap-1 text-sm sm:grid-cols-2">
             {[...l.exercises, l.challenge].map((e) => (
               <li key={e.id} className="flex items-center gap-2">
-                <span className={s.solved[e.id] ? "text-brand-600" : "text-slate-300"}>●</span>
+                <span className={s.solved[e.id] ? "text-brand-600" : "text-slate-500"}>●</span>
                 <Link to={`/learn/${l.id}`} onClick={() => setTimeout(() => document.getElementById(e.id === l.challenge.id ? "challenge" : "exercises")?.scrollIntoView(), 300)} className="flex-1 truncate hover:underline">{e.title}</Link>
-                <span className="text-[11px] text-slate-400">{e.id === l.challenge.id ? "Mini challenge" : exerciseKindLabel(e)}</span>
+                <span className="text-[11px] text-slate-500 dark:text-slate-400">{e.id === l.challenge.id ? "Mini challenge" : exerciseKindLabel(e)}</span>
               </li>
             ))}
           </ul>

@@ -28,7 +28,7 @@ export function VariableBoxes() {
       <div className="grid gap-4 md:grid-cols-2">
         <pre className="rounded-lg bg-slate-900 p-3 font-mono text-sm text-slate-200">
           {STEPS_VAR.map((s, k) => (
-            <div key={k} className={k === i ? "rounded bg-brand-600/40 text-white" : k < i ? "text-slate-400" : "text-slate-600"}>
+            <div key={k} className={k === i ? "rounded bg-brand-600/40 text-white" : k < i ? "text-slate-500 dark:text-slate-400" : "text-slate-600"}>
               {k === i ? "➜ " : "  "}
               {s.code}
             </div>
@@ -37,8 +37,8 @@ export function VariableBoxes() {
         <div className="flex flex-wrap content-start gap-3">
           {Object.entries(st.vars).map(([k, v]) => (
             <div key={k} className="flex items-center gap-2">
-              <span className="rounded-md bg-brand-600 px-2 py-1 font-mono text-sm text-white">{k}</span>
-              <span className="text-slate-400">→</span>
+              <span className="rounded-md bg-brand-700 px-2 py-1 font-mono text-sm text-white">{k}</span>
+              <span className="text-slate-500 dark:text-slate-400">→</span>
               <span className="rounded-md border-2 border-slate-300 px-3 py-1 font-mono text-sm dark:border-slate-600">{v}</span>
             </div>
           ))}
@@ -130,7 +130,7 @@ export function LoopTrace() {
           <thead><tr className="text-left text-xs uppercase text-slate-500"><th className="pr-4">Iterasi</th><th className="pr-4">n</th><th className="pr-4">total sebelum</th><th>total sesudah</th></tr></thead>
           <tbody>
             {nilai.map((v, k) => (
-              <tr key={k} className={k === i ? "bg-brand-50 font-semibold dark:bg-brand-900/40" : k > i ? "text-slate-300 dark:text-slate-600" : ""}>
+              <tr key={k} className={k === i ? "bg-brand-50 font-semibold dark:bg-brand-900/40" : k > i ? "text-slate-500 dark:text-slate-600" : ""}>
                 <td className="pr-4">{k + 1}</td><td className="pr-4 font-mono">{v}</td><td className="pr-4 font-mono">{nilai.slice(0, k).reduce((a, b) => a + b, 0)}</td><td className="font-mono">{nilai.slice(0, k + 1).reduce((a, b) => a + b, 0)}</td>
               </tr>
             ))}

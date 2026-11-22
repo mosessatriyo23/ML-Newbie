@@ -288,11 +288,11 @@ function LessonContent({ lesson }: { lesson: Lesson }) {
                 <h3 className="flex items-center gap-2 font-semibold"><AlertTriangle size={16} className="text-amber-500" /> {m.title}</h3>
                 <div className="grid gap-3 md:grid-cols-2">
                   <div>
-                    <div className="mt-2 text-xs font-semibold uppercase text-red-600">✗ Salah{m.error ? ` → ${m.error}` : ""}</div>
+                    <div className="mt-2 text-xs font-semibold uppercase text-red-700 dark:text-red-400">✗ Salah{m.error ? ` → ${m.error}` : ""}</div>
                     <CodeBlock code={m.wrong} />
                   </div>
                   <div>
-                    <div className="mt-2 text-xs font-semibold uppercase text-emerald-600">✓ Benar</div>
+                    <div className="mt-2 text-xs font-semibold uppercase text-emerald-700 dark:text-emerald-400">✓ Benar</div>
                     <CodeBlock code={m.fix} />
                   </div>
                 </div>
@@ -375,7 +375,7 @@ function LessonContent({ lesson }: { lesson: Lesson }) {
 
       <aside className="sticky top-20 hidden h-[calc(100vh-6rem)] w-60 shrink-0 overflow-y-auto text-sm xl:block" aria-label="Daftar isi">
         <div className="card p-3">
-          <div className="text-xs font-semibold uppercase text-slate-400">Lesson progress</div>
+          <div className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Lesson progress</div>
           <div className="mt-2 flex items-center justify-between text-xs"><span>Latihan & challenge</span><b>{solvedCount}/{exIds.length}</b></div>
           <div className="progress mt-1"><div style={{ width: `${(solvedCount / exIds.length) * 100}%` }} /></div>
           <div className="mt-2 flex items-center justify-between text-xs"><span>Skor kuis terbaik</span><b>{s.quizResults[lesson.id]?.length ? `${quizBest}/5` : "—"}</b></div>
@@ -383,7 +383,7 @@ function LessonContent({ lesson }: { lesson: Lesson }) {
           <div className="mt-2 flex items-center justify-between text-xs"><span>Status</span><b>{completed ? "Selesai" : "Belum selesai"}</b></div>
         </div>
         <div className="mt-3 card p-3">
-          <div className="mb-1 text-xs font-semibold uppercase text-slate-400">Table of contents</div>
+          <div className="mb-1 text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Table of contents</div>
           <ul className="space-y-0.5">
             {tocIds.map(([id, label], i) => (
               <li key={id}>
@@ -395,13 +395,13 @@ function LessonContent({ lesson }: { lesson: Lesson }) {
           </ul>
         </div>
         <div className="mt-3 card p-3">
-          <div className="mb-1 text-xs font-semibold uppercase text-slate-400">Quick reference</div>
+          <div className="mb-1 text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Quick reference</div>
           {lesson.cheatsheet.slice(0, 4).map((c, i) => (
             <div key={i} className="mb-1.5"><pre className="whitespace-pre-wrap font-mono text-[11.5px] text-pink-700 dark:text-pink-300">{c.syntax}</pre><div className="text-[11.5px] text-slate-500">{c.desc}</div></div>
           ))}
         </div>
         <div className="mt-3 card p-3">
-          <div className="mb-1 text-xs font-semibold uppercase text-slate-400">Related lessons</div>
+          <div className="mb-1 text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Related lessons</div>
           {[prev, next].filter(Boolean).map((l) => (
             <Link key={l!.id} to={`/learn/${l!.id}`} className="block py-0.5 text-[13px] text-brand-700 hover:underline dark:text-brand-400">{l!.title}{!isAvailable(l!.id) && " (belum tersedia)"}</Link>
           ))}
