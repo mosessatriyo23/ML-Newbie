@@ -68,7 +68,8 @@ await step("Semua navigasi utama berfungsi", async () => {
     ["/settings", "settings"],
     ["/learn/np-creating-arrays", "lesson-article"],
     ["/learn/np-broadcasting", "lesson-article"],
-    ["/learn/pd-series", "planned-lesson"],
+    ["/learn/pd-apply-function", "lesson-article"],
+    ["/learn/load-features-and-target", "planned-lesson"],
   ];
   for (const [h, id] of pages) {
     await go(h);

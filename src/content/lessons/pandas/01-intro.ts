@@ -340,7 +340,7 @@ print(profil(df))`,
   references: [
     pandasDoc("10 minutes to pandas", "user_guide/10min.html"),
     pandasDoc("Getting started — What kind of data does pandas handle?", "getting_started/intro_tutorials/01_table_oriented.html"),
-    pandasDoc("Copy-on-Write (CoW)", "user_guide/copy_on_write.html"),
+    pandasDoc("Migration guide — Copy-on-Write (CoW) dan string dtype baru", "user_guide/migration.html#copy-on-write-cow"),
     { source: "Kaggle Learn", title: "Pandas — Creating, Reading and Writing", url: "https://www.kaggle.com/learn/pandas" },
   ],
 };

@@ -377,7 +377,7 @@ print(len(minggu1), rata_minggu1)`,
   references: [
     pandasDoc("Indexing and selecting data — Selection by label", "user_guide/indexing.html#selection-by-label"),
     pandasDoc("pandas.DataFrame.loc", "reference/api/pandas.DataFrame.loc.html"),
-    pandasDoc("Copy-on-Write — Chained assignment", "user_guide/copy_on_write.html#chained-assignment"),
+    pandasDoc("Copy-on-Write — Chained assignment", "user_guide/migration.html#chained-assignment"),
     pandasDoc("pandas.DataFrame.set_index", "reference/api/pandas.DataFrame.set_index.html"),
   ],
 };

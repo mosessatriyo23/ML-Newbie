@@ -8,5 +8,14 @@ import { lesson as selectRows } from "./06-select-rows.ts";
 import { lesson as loc } from "./07-loc.ts";
 import { lesson as iloc } from "./08-iloc.ts";
 import { lesson as filtering } from "./09-filtering.ts";
+import { lesson as sorting } from "./10-sorting.ts";
+import { lesson as adding } from "./11-adding.ts";
+import { lesson as removing } from "./12-removing.ts";
+import { lesson as renaming } from "./13-renaming.ts";
+import { lesson as groupby } from "./14-groupby.ts";
+import { lesson as aggregation } from "./15-aggregation.ts";
+import { lesson as merge } from "./16-merge.ts";
+import { lesson as concat } from "./17-concat.ts";
+import { lesson as apply } from "./18-apply.ts";
 
-export const PANDAS_LESSONS: Lesson[] = [intro, series, dataframe, creating, selectCols, selectRows, loc, iloc, filtering];
+export const PANDAS_LESSONS: Lesson[] = [intro, series, dataframe, creating, selectCols, selectRows, loc, iloc, filtering, sorting, adding, removing, renaming, groupby, aggregation, merge, concat, apply];
