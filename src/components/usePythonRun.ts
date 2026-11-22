@@ -48,6 +48,7 @@ export function usePythonRun() {
         onStdout: append("stdout"),
         onStderr: append("stderr"),
         onStatus: (t) => mounted.current && setOut((o) => ({ ...o, status: "loading", statusText: t })),
+        onStarted: () => mounted.current && setOut((o) => ({ ...o, status: "running", statusText: "Berjalan…" })),
         timeoutSec: getState().prefs.execTimeoutSec,
       });
       mine.current = false;
@@ -67,7 +68,11 @@ export function usePythonRun() {
       return res;
     } catch (e) {
       mine.current = false;
-      if (mounted.current) setOut({ ...emptyOutput, status: "done", chunks: [{ kind: "stderr", text: String((e as Error).message ?? e) + "\n" }] });
+      if (mounted.current) {
+        const msg = String((e as Error).message ?? e);
+        if (/Dihentikan/.test(msg)) setOut({ ...emptyOutput, status: "interrupted", statusText: `⏹ ${msg}` });
+        else setOut({ ...emptyOutput, status: "done", chunks: [{ kind: "stderr", text: msg + "\n" }] });
+      }
       return null;
     }
   }, []);

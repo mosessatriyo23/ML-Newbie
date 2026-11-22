@@ -9,8 +9,9 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -b",
-    "test:content": "node --experimental-strip-types scripts/test-content.ts",
-    "test:links": "node --experimental-strip-types scripts/check-links.ts",
+    "test:content": "node --experimental-strip-types --no-warnings scripts/test-content.ts",
+    "gen:outputs": "node --experimental-strip-types --no-warnings scripts/gen-outputs.ts",
+    "test:links": "node --experimental-strip-types --no-warnings scripts/check-links.ts",
     "test:e2e": "node scripts/e2e.mjs"
   },
   "dependencies": {

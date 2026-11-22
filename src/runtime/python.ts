@@ -19,6 +19,7 @@ export interface RunOptions {
   onStdout?: (text: string) => void;
   onStderr?: (text: string) => void;
   onStatus?: (text: string) => void;
+  onStarted?: () => void;
   timeoutSec?: number;
 }
 
@@ -82,7 +83,7 @@ class PythonRuntime {
         reject(new Error(msg));
       };
       const files = Object.entries(DATASET_FILES).map(([path, content]) => ({ path, content }));
-      const req: WorkerRequest = { type: "init", files };
+      const req: WorkerRequest = { type: "init", files, assetBase: new URL(".", document.baseURI).href };
       w.postMessage(req);
       // file yang diunggah pengguna ditulis ulang setelah worker baru dibuat
       for (const [path, content] of this.uploaded) {
@@ -114,6 +115,7 @@ class PythonRuntime {
         const cur = this.current;
         if (cur && cur.id === msg.id) {
           cur.start = performance.now();
+          cur.opts.onStarted?.();
           const sec = cur.opts.timeoutSec ?? 30;
           if (sec > 0) cur.timer = setTimeout(() => this.interrupt("timeout"), sec * 1000);
         }
@@ -176,6 +178,9 @@ class PythonRuntime {
     const cur = this.current;
     this.current = null;
     if (cur?.timer) clearTimeout(cur.timer);
+    // Jika Stop ditekan saat runtime masih dimuat, batalkan juga pemanggilan run() yang sedang menunggu.
+    this.initReject?.(new Error("Dihentikan saat Python runtime sedang dimuat."));
+    this.initReject = null;
     this.worker?.terminate();
     this.worker = null;
     this.readyPromise = null;

@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { ExerciseView, lessonTitle } from "../components/Exercise";
 import { QuestionInput, QuestionPrompt, QuestionReview, recordQuestion } from "../components/Quiz";
 import { CodeBlock } from "../components/CodeBlock";
-import { moduleAvailability } from "../content";
+import { isAvailable, moduleAvailability } from "../content";
 import { EXAMS } from "../content/exams/index";
 import { MODULES, SKILL_LABEL } from "../curriculum/curriculum";
 import { hashString, isQuizCorrect, seededRandom, shuffle, shuffleOptions, type QuizAnswer } from "../engine/grading";
@@ -195,7 +195,7 @@ function ExamRunner({ exam }: { exam: ExamDef }) {
           <h2 className="font-semibold">Topik yang perlu diulang & rekomendasi latihan</h2>
           {wrongLessons.size ? (
             <ul className="mt-1 list-disc pl-5 text-sm">
-              {[...wrongLessons].map((l) => <li key={l}><Link className="text-brand-700 underline dark:text-brand-400" to={`/learn/${l}`}>{lessonTitle(l)}</Link> — baca ulang lalu kerjakan latihan Level 3–5-nya.</li>)}
+              {[...wrongLessons].sort((x, y) => Number(isAvailable(y)) - Number(isAvailable(x))).map((l) => <li key={l}><Link className="text-brand-700 underline dark:text-brand-400" to={`/learn/${l}`}>{lessonTitle(l)}</Link> — {isAvailable(l) ? "baca ulang lalu kerjakan latihan Level 3–5-nya." : "materinya belum tersedia di ML Academy; gunakan referensi resmi yang tertera di halaman tersebut."}</li>)}
             </ul>
           ) : <p className="text-sm text-slate-500">Semua soal benar.</p>}
           <p className="mt-2 text-sm">Soal yang salah sudah dicatat di <Link to="/practice/errors" className="underline">Error Notebook</Link> — gunakan <b>Retry Mistakes</b>. Tambah latihan harian di <Link to="/practice/memory" className="underline">Memory Mode</Link>.</p>

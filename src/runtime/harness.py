@@ -8,6 +8,7 @@ import linecache
 import os
 import sys
 import traceback
+import warnings
 
 os.environ.setdefault("MPLBACKEND", "Agg")
 
@@ -24,7 +25,10 @@ def _capture_figures():
     for num in plt.get_fignums():
         fig = plt.figure(num)
         buf = io.BytesIO()
-        fig.savefig(buf, format="png", dpi=100, bbox_inches="tight")
+        # Peringatan internal backend Pyodide saat menyimpan gambar bukan berasal dari kode pengguna.
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            fig.savefig(buf, format="png", dpi=100, bbox_inches="tight")
         _FIGURES.append(base64.b64encode(buf.getvalue()).decode("ascii"))
     plt.close("all")
 

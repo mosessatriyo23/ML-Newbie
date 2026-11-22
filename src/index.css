@@ -121,3 +121,6 @@ code, pre, kbd, .cm-editor, .font-mono { font-variant-ligatures: none; font-feat
 .tok-operator, .tok-punctuation { color: #c9d1d9; }
 .tok-variableName { color: #e6edf3; }
 .tok-special { color: #79c0ff; }
+
+/* Grid item default-nya min-width:auto sehingga blok kode panjang melebar keluar layar di HP. */
+.grid > * { min-width: 0; }

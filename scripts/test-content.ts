@@ -14,6 +14,9 @@ import { EXAMS } from "../src/content/exams/index.ts";
 import { WORKFLOW_STEPS } from "../src/content/workflow.ts";
 import { CHEATSHEETS } from "../src/content/cheatsheets.ts";
 import { DAILY_EXTRA } from "../src/content/practice.ts";
+import { ML_WORKFLOW_CODE } from "../src/content/cheatsheets.ts";
+import { PROJECTS } from "../src/content/projects.ts";
+import { ALL_LESSON_META } from "../src/curriculum/curriculum.ts";
 import type { CodeExercise, PyTest } from "../src/types.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -215,6 +218,32 @@ if (!filter || filter === "cheatsheets") {
       else ok();
     }
   }
+}
+
+if (!filter || filter === "refs") {
+  console.log("• referensi antar-konten");
+  const ids = new Set(ALL_LESSON_META.map((l) => l.id));
+  const dupes = ALL_LESSON_META.length - ids.size;
+  if (dupes) fail("curriculum", `${dupes} id lesson duplikat`);
+  const check = (where: string, id?: string) => {
+    if (!id) return;
+    if (!ids.has(id)) fail(where, `lesson id tidak ada di kurikulum: ${id}`);
+    else ok();
+  };
+  for (const l of ALL_LESSONS) {
+    check(`lesson ${l.id}`, l.id);
+    for (const p of l.prerequisites ?? []) check(`prasyarat ${l.id}`, p);
+    for (const q of l.quiz) check(`quiz ${q.id}`, q.lessonId);
+  }
+  for (const s of WORKFLOW_STEPS) for (const l of s.lessons) check(`workflow ${s.id}`, l);
+  for (const p of PROJECTS) for (const l of p.prerequisites) check(`project ${p.id}`, l);
+  for (const e of EXAMS) {
+    for (const q of e.questions) check(`exam ${q.id}`, q.lessonId);
+    for (const t of e.codeTasks ?? []) check(`exam ${t.id}`, t.lessonId);
+  }
+  const r = await run(ML_WORKFLOW_CODE);
+  if (r.error) fail("ML_WORKFLOW_CODE", r.error.traceback);
+  else ok();
 }
 
 console.log(`\n${checks} pemeriksaan lulus, ${failures} gagal.`);

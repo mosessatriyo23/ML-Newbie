@@ -367,7 +367,7 @@ print(f"Baris: {n_rows} | Rata-rata: {mean_score} | Lulus: {pass_rate:.0%}")`,
   ],
   references: [
     pyDoc("The Python Tutorial — 5.5 Dictionaries", "tutorial/datastructures.html#dictionaries"),
-    pyDoc("Built-in Types — Mapping Types (dict)", "library/stdtypes.html#mapping-types-dict"),
+    pyDoc("Built-in Types — Mapping Types (dict)", "library/stdtypes.html#typesmapping"),
     pyDoc("Built-in Functions — max() (parameter key)", "library/functions.html#max"),
     kagglePy("Strings and Dictionaries (Kaggle Learn Python)", "strings-and-dictionaries"),
   ],

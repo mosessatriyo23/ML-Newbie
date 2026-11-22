@@ -1,4 +1,4 @@
-import type { Reference } from "../types";
+import type { Reference } from "../types.ts";
 
 // Pembuat referensi agar nama sumber konsisten. Semua URL diperiksa oleh scripts/check-links.ts.
 export const pyDoc = (title: string, path: string, note?: string): Reference => ({

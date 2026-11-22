@@ -1,5 +1,5 @@
-import type { Reference } from "../types";
-import { numpyDoc, pandasDoc, sklearnDoc } from "./refs";
+import type { Reference } from "../types.ts";
+import { numpyDoc, pandasDoc, sklearnDoc } from "./refs.ts";
 
 const MLCC = (title: string, path = ""): Reference => ({ source: "Google Machine Learning Crash Course", title, url: `https://developers.google.com/machine-learning/crash-course${path}` });
 const KAGGLE = (title: string, slug: string): Reference => ({ source: "Kaggle Learn", title, url: `https://www.kaggle.com/learn/${slug}` });

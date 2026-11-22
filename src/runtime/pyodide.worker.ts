@@ -9,6 +9,8 @@ declare const self: DedicatedWorkerGlobalScope;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let pyodide: any = null;
 let seabornInstalled = false;
+let assetBase = "";
+const SEABORN_WHEEL = "wheels/seaborn-0.13.2-py3-none-any.whl";
 const decoder = new TextDecoder();
 const errDecoder = new TextDecoder();
 
@@ -16,7 +18,8 @@ function post(msg: WorkerResponse) {
   self.postMessage(msg);
 }
 
-async function init(files: { path: string; content: string }[]) {
+async function init(files: { path: string; content: string }[], base: string) {
+  assetBase = base;
   post({ type: "status", text: "Mengunduh Python runtime (Pyodide)…" });
   const mod = await import(/* @vite-ignore */ `${PYODIDE_INDEX_URL}pyodide.mjs`);
   pyodide = await mod.loadPyodide({ indexURL: PYODIDE_INDEX_URL });
@@ -56,7 +59,12 @@ async function ensurePackages(code: string) {
     post({ type: "status", text: "Memuat paket: seaborn (via micropip)…" });
     await pyodide.loadPackage(["micropip", "matplotlib", "pandas", "scipy"], { messageCallback: onMsg, errorCallback: onMsg });
     const micropip = pyodide.pyimport("micropip");
-    await micropip.install("seaborn");
+    try {
+      // Wheel seaborn di-host bersama situs (versi terkunci, tidak bergantung pada PyPI).
+      await micropip.install(new URL(SEABORN_WHEEL, assetBase).href);
+    } catch {
+      await micropip.install("seaborn");
+    }
     seabornInstalled = true;
   }
   if (MPL_RE.test(code)) await pyodide.loadPackage(["matplotlib"], { messageCallback: onMsg, errorCallback: onMsg });
@@ -84,7 +92,7 @@ async function run(id: number, code: string, tests?: string) {
 self.onmessage = async (ev: MessageEvent<WorkerRequest>) => {
   const msg = ev.data;
   try {
-    if (msg.type === "init") await init(msg.files);
+    if (msg.type === "init") await init(msg.files, msg.assetBase);
     else if (msg.type === "run") await run(msg.id, msg.code, msg.tests);
     else if (msg.type === "writeFile") {
       writeFile(msg.path, msg.content);
