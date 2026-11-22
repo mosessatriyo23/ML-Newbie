@@ -3,7 +3,7 @@
 // - Tombol Stop / timeout menghentikan worker dengan terminate() lalu membuat worker baru,
 //   sehingga infinite loop tidak membuat browser freeze.
 import { DATASET_FILES } from "../content/datasets";
-import type { PyError, RawRunResult, TestResult, WorkerRequest, WorkerResponse } from "./protocol";
+import { PYODIDE_INDEX_URL, type PyError, type RawRunResult, type TestResult, type WorkerRequest, type WorkerResponse } from "./protocol";
 
 export type RuntimeStatus = "idle" | "loading" | "ready" | "running" | "error";
 
@@ -83,7 +83,10 @@ class PythonRuntime {
         reject(new Error(msg));
       };
       const files = Object.entries(DATASET_FILES).map(([path, content]) => ({ path, content }));
-      const req: WorkerRequest = { type: "init", files, assetBase: new URL(".", document.baseURI).href };
+      const assetBase = new URL(".", document.baseURI).href;
+      // VITE_PYODIDE_LOCAL=1: runtime & paket di-host bersama situs (folder pyodide/), selain itu dari CDN resmi.
+      const indexURL = import.meta.env.VITE_PYODIDE_LOCAL === "1" ? new URL("pyodide/", assetBase).href : PYODIDE_INDEX_URL;
+      const req: WorkerRequest = { type: "init", files, assetBase, indexURL };
       w.postMessage(req);
       // file yang diunggah pengguna ditulis ulang setelah worker baru dibuat
       for (const [path, content] of this.uploaded) {

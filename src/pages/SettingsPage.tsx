@@ -9,6 +9,7 @@ import type { Difficulty } from "../types";
 export default function SettingsPage() {
   const s = useStore((x) => x);
   const [msg, setMsg] = useState("");
+  const [confirmReset, setConfirmReset] = useState(false);
   const [intervals, setIntervals] = useState(s.prefs.srsIntervals.join(", "));
   const file = useRef<HTMLInputElement>(null);
   return (
@@ -65,7 +66,17 @@ export default function SettingsPage() {
           <button type="button" className="btn-outline" onClick={() => { downloadText(`ml-academy-progress-${todayStr()}.json`, exportProgress(), "application/json"); setMsg("✓ Progres diekspor."); }} data-testid="export-btn"><Download size={14} /> Export Learning Progress</button>
           <input ref={file} type="file" accept="application/json,.json" className="hidden" onChange={async (e) => { const f = e.target.files?.[0]; if (!f) return; const r = importProgress(await f.text()); setMsg(r.ok ? `✓ ${r.message}` : `✗ ${r.message}`); e.target.value = ""; }} data-testid="import-input" />
           <button type="button" className="btn-outline" onClick={() => file.current?.click()}><Upload size={14} /> Import Learning Progress</button>
-          <button type="button" className="btn-danger" onClick={() => { if (confirm("Hapus SEMUA progres belajar (lesson selesai, kuis, ujian, flashcard, error notebook, kode tersimpan)? Tindakan ini tidak bisa dibatalkan. Pertimbangkan Export terlebih dahulu.")) { resetProgress(); setMsg("Progres telah di-reset."); } }} data-testid="reset-btn"><Trash2 size={14} /> Reset Progress</button>
+          {!confirmReset ? (
+            <button type="button" className="btn-danger" onClick={() => setConfirmReset(true)} data-testid="reset-btn"><Trash2 size={14} /> Reset Progress</button>
+          ) : (
+            <div className="flex w-full flex-col gap-2 rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900 dark:border-red-800 dark:bg-red-950/40 dark:text-red-100" role="alert">
+              <span>Hapus SEMUA progres belajar (lesson selesai, kuis, ujian, flashcard, error notebook, kode tersimpan)? Tindakan ini tidak bisa dibatalkan. Pertimbangkan Export terlebih dahulu.</span>
+              <div className="flex gap-2">
+                <button type="button" className="btn-danger" onClick={() => { resetProgress(); setConfirmReset(false); setMsg("Progres telah di-reset."); }} data-testid="reset-confirm">Ya, hapus semua progres</button>
+                <button type="button" className="btn-outline" onClick={() => setConfirmReset(false)}>Batal</button>
+              </div>
+            </div>
+          )}
         </div>
         <div className="text-xs text-slate-500">Ringkasan data: {Object.keys(s.completedLessons).length} lesson selesai · {Object.keys(s.attempts).length} item dijawab · {s.exams.length} ujian · {Object.keys(s.cards).length} flashcard · {Object.keys(s.errors).length} catatan kesalahan · {Object.keys(s.code).length} kode tersimpan.</div>
       </section>

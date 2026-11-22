@@ -2,7 +2,7 @@
 // Web Worker yang menjalankan Python sungguhan (Pyodide/WebAssembly) di luar thread UI,
 // sehingga halaman tidak freeze dan eksekusi dapat dihentikan dengan terminate().
 import harnessSource from "./harness.py?raw";
-import { PYODIDE_INDEX_URL, type WorkerRequest, type WorkerResponse } from "./protocol";
+import type { WorkerRequest, WorkerResponse } from "./protocol";
 
 declare const self: DedicatedWorkerGlobalScope;
 
@@ -18,11 +18,11 @@ function post(msg: WorkerResponse) {
   self.postMessage(msg);
 }
 
-async function init(files: { path: string; content: string }[], base: string) {
+async function init(files: { path: string; content: string }[], base: string, indexURL: string) {
   assetBase = base;
   post({ type: "status", text: "Mengunduh Python runtime (Pyodide)…" });
-  const mod = await import(/* @vite-ignore */ `${PYODIDE_INDEX_URL}pyodide.mjs`);
-  pyodide = await mod.loadPyodide({ indexURL: PYODIDE_INDEX_URL });
+  const mod = await import(/* @vite-ignore */ `${indexURL}pyodide.mjs`);
+  pyodide = await mod.loadPyodide({ indexURL });
   pyodide.setStdout({
     write: (buf: Uint8Array) => {
       post({ type: "stdout", text: decoder.decode(buf, { stream: true }) });
@@ -92,7 +92,7 @@ async function run(id: number, code: string, tests?: string) {
 self.onmessage = async (ev: MessageEvent<WorkerRequest>) => {
   const msg = ev.data;
   try {
-    if (msg.type === "init") await init(msg.files, msg.assetBase);
+    if (msg.type === "init") await init(msg.files, msg.assetBase, msg.indexURL);
     else if (msg.type === "run") await run(msg.id, msg.code, msg.tests);
     else if (msg.type === "writeFile") {
       writeFile(msg.path, msg.content);

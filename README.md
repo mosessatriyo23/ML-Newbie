@@ -22,6 +22,9 @@ npm run dev          # http://localhost:5173
 npm run build        # hasil di dist/ (bisa di-host statis, mis. GitHub Pages)
 ```
 
+Varian tanpa CDN (runtime & semua paket di-host sendiri, ±50 MB, cocok untuk intranet/offline):
+`npm run build:selfhosted` → `dist-selfhosted/`.
+
 Python runtime diunduh dari `cdn.jsdelivr.net/pyodide/v314.0.7/full/` saat tombol Run pertama ditekan
 (Python 3.14, NumPy 2.4, pandas 3.0, scikit-learn 1.8, Matplotlib 3.10). Wheel seaborn 0.13.2
 di-host sendiri di `public/wheels/`.

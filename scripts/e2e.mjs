@@ -273,8 +273,8 @@ await step("Ujian diagnostik (Exam Mode) selesai dengan nilai & pembahasan", asy
     else await page.locator(".exercise-card input").fill("x");
     await page.getByTestId("next-question").click();
   }
-  page.once("dialog", (d) => d.accept());
   await page.getByTestId("finish-exam").click();
+  await page.getByTestId("finish-confirm").click();
   await page.getByTestId("exam-result").waitFor();
   const t = await page.getByTestId("exam-result").textContent();
   expect(t.includes("/30") && t.includes("Pembahasan"), "hasil ujian tidak lengkap");

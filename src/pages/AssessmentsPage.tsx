@@ -56,6 +56,7 @@ function ExamRunner({ exam }: { exam: ExamDef }) {
   const [now, setNow] = useState(Date.now());
   const [result, setResult] = useState<{ score: number; total: number; durationSec: number } | null>(null);
   const finished = useRef(false);
+  const [confirmFinish, setConfirmFinish] = useState(false);
   const hasCode = (exam.codeTasks?.length ?? 0) > 0;
   const hasQuiz = exam.questions.length > 0;
 
@@ -71,6 +72,7 @@ function ExamRunner({ exam }: { exam: ExamDef }) {
     setIdx(0);
     setStartAt(Date.now());
     finished.current = false;
+    setConfirmFinish(false);
     setPhase("run");
   };
 
@@ -245,7 +247,15 @@ function ExamRunner({ exam }: { exam: ExamDef }) {
         <span className="ml-auto flex items-center gap-1 text-sm font-mono">
           {remaining !== null ? <><Timer size={15} className={remaining < 60 ? "text-red-500" : ""} /> <span className={remaining < 60 ? "text-red-500" : ""}>{fmt(Math.max(0, remaining))}</span></> : <><Clock size={15} /> {fmt(Math.floor((now - startAt) / 1000))}</>}
         </span>
-        <button type="button" className="btn-primary" onClick={() => { if (answeredCount < items.length && !confirm(`Masih ada ${items.length - answeredCount} soal belum dijawab. Kumpulkan sekarang?`)) return; finish(); }} data-testid="finish-exam">Selesai & Kumpulkan</button>
+        {confirmFinish ? (
+          <span className="flex flex-wrap items-center gap-2 text-sm">
+            <span className="text-amber-700 dark:text-amber-300">{items.length - answeredCount} soal belum dijawab. Kumpulkan sekarang?</span>
+            <button type="button" className="btn-primary" onClick={finish} data-testid="finish-confirm">Ya, kumpulkan</button>
+            <button type="button" className="btn-outline" onClick={() => setConfirmFinish(false)}>Lanjut mengerjakan</button>
+          </span>
+        ) : (
+          <button type="button" className="btn-primary" onClick={() => (answeredCount < items.length ? setConfirmFinish(true) : finish())} data-testid="finish-exam">Selesai & Kumpulkan</button>
+        )}
       </div>
       <div className="mb-4 flex flex-wrap gap-1">
         {items.map((x, i) => {

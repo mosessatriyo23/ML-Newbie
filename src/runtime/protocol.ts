@@ -23,7 +23,7 @@ export interface RawRunResult {
 }
 
 export type WorkerRequest =
-  | { type: "init"; files: { path: string; content: string }[]; assetBase: string }
+  | { type: "init"; files: { path: string; content: string }[]; assetBase: string; indexURL: string }
   | { type: "run"; id: number; code: string; tests?: string }
   | { type: "writeFile"; id: number; path: string; content: string | Uint8Array }
   | { type: "listFiles"; id: number }
