@@ -27,7 +27,7 @@ export default function SettingsPage() {
             {(["beginner", "intermediate", "advanced"] as Difficulty[]).map((d) => (
               <button key={d} type="button" className={`choice flex-col ${s.prefs.difficulty === d ? "choice-selected" : ""}`} onClick={() => setPrefs({ difficulty: d })}>
                 <b>{DIFFICULTY_LABEL[d]}</b>
-                <span className="text-xs text-slate-500">{d === "beginner" ? "Default. Materi lanjutan ditampilkan redup dengan label prasyarat." : d === "intermediate" ? "Menampilkan materi Intermediate secara normal." : "Semua materi, termasuk Advanced."}</span>
+                <span className="text-xs text-slate-500">{d === "beginner" ? "Default. Materi lanjutan tetap bisa dibuka, ditandai label INT/ADV." : d === "intermediate" ? "Menampilkan materi Intermediate secara normal." : "Semua materi, termasuk Advanced."}</span>
               </button>
             ))}
           </div>

@@ -60,6 +60,7 @@ const RAW: { id: string; title: string; items: Raw[] }[] = [
     title: "Pandas Cheat Sheet",
     items: [
       { name: "pd.read_csv()", syntax: 'pd.read_csv("file.csv", sep=",", usecols=[...])', use: "Membaca file CSV menjadi DataFrame.", params: "sep, usecols, header, index_col, na_values, nrows", example: 'import pandas as pd\ndf = pd.read_csv("data.csv")\nprint(df.head(3))' },
+      { name: "read_csv dengan sep (data nyata)", syntax: 'pd.read_csv("winequality-red.csv", sep=";")', use: "File asli Wine Quality (UCI) memakai titik koma sebagai pemisah kolom.", params: "sep", example: 'import pandas as pd\ndf = pd.read_csv("winequality-red.csv", sep=";")\nprint(df.shape)\nprint(df["quality"].value_counts().sort_index().to_dict())' },
       { name: "pd.DataFrame()", syntax: 'pd.DataFrame({"kolom": [...]})', use: "Membuat DataFrame dari dictionary.", example: 'import pandas as pd\ndf = pd.DataFrame({"nama": ["A", "B"], "nilai": [80, 90]})\nprint(df)' },
       { name: "Info dasar", syntax: "df.shape; df.columns; df.dtypes; df.info()", use: "Memahami struktur dataset.", example: 'import pandas as pd\ndf = pd.read_csv("data.csv")\nprint(df.shape)\nprint(list(df.columns))' },
       { name: "describe()", syntax: "df.describe()", use: "Statistik ringkas kolom numerik.", example: 'import pandas as pd\ndf = pd.read_csv("data.csv")\nprint(df["Score"].describe().round(2))' },
@@ -92,6 +93,7 @@ const RAW: { id: string; title: string; items: Raw[] }[] = [
     items: [
       { name: "Langkah awal", syntax: "df.head(); df.shape; df.info(); df.describe()", use: "Kenali isi, ukuran, tipe, dan statistik data." },
       { name: "Missing value per kolom", syntax: "df.isnull().sum().sort_values(ascending=False)", use: "Mencari kolom dengan data kosong.", example: 'import pandas as pd\ndf = pd.read_csv("customer_churn.csv")\nprint(df.isnull().sum().sort_values(ascending=False).head(3))' },
+      { name: "Missing value pada data nyata", syntax: "df.isnull().sum()[lambda s: s > 0]", use: "Heart Disease (UCI) memiliki missing value asli di kolom ca dan thal.", example: 'import pandas as pd\ndf = pd.read_csv("heart_disease.csv")\nprint(df.isnull().sum()[lambda s: s > 0])\nprint("Ada penyakit:", (df["num"] > 0).mean().round(3))' },
       { name: "Duplikat", syntax: "df.duplicated().sum()", use: "Menghitung baris duplikat.", example: 'import pandas as pd\ndf = pd.read_csv("customer_churn.csv")\nprint(df.duplicated().sum())' },
       { name: "Class distribution", syntax: 'df["target"].value_counts(normalize=True)', use: "Memeriksa keseimbangan kelas target.", example: 'import pandas as pd\ndf = pd.read_csv("iris.csv")\nprint(df["species"].value_counts(normalize=True).round(3))' },
       { name: "Korelasi dengan target", syntax: 'df.corr(numeric_only=True)["target"].sort_values()', use: "Fitur numerik yang paling berhubungan dengan target.", example: 'import pandas as pd\ndf = pd.read_csv("student_scores.csv")\nprint(df.corr(numeric_only=True)["final_score"].round(2))' },

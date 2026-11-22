@@ -1,4 +1,4 @@
-import { BrainCircuit, ChevronDown, ChevronRight, CircleCheck, Circle, Lock, Menu, Moon, PanelLeftClose, PanelLeftOpen, Search, Sun, X, Workflow, Settings } from "lucide-react";
+import { BrainCircuit, ChevronDown, ChevronRight, CircleCheck, Circle, CircleDashed, Menu, Moon, PanelLeftClose, PanelLeftOpen, Search, Sun, X, Workflow, Settings } from "lucide-react";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { isAvailable, moduleAvailability } from "../content";
@@ -111,7 +111,6 @@ export function CurriculumSidebar({ onNavigate }: { onNavigate?: () => void }) {
     if (currentModule) setOpenMods((o) => ({ ...o, [currentModule]: true }));
   }, [currentModule]);
   const diff = s.prefs.difficulty;
-  const rank = { beginner: 0, intermediate: 1, advanced: 2 };
   return (
     <nav className="space-y-1 p-3 text-sm" aria-label="Daftar modul">
       <Link to="/workflow" onClick={onNavigate} className={`mb-2 flex items-center gap-2 rounded-md px-2 py-1.5 font-medium ${loc.pathname === "/workflow" ? "bg-brand-50 text-brand-700 dark:bg-brand-900/40 dark:text-brand-300" : "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"}`}>
@@ -135,12 +134,12 @@ export function CurriculumSidebar({ onNavigate }: { onNavigate?: () => void }) {
                 </span>
                 <span className="mt-1 flex items-center gap-2 text-[11px] text-slate-500">
                   {av.avail === 0 ? (
-                    <span className="badge badge-slate"><Lock size={10} /> Fase {m.phase} — belum tersedia</span>
+                    <span className="badge badge-slate">materi sedang ditulis</span>
                   ) : (
                     <>
                       <span className="progress h-1.5 w-16"><div style={{ width: `${(done / m.lessons.length) * 100}%` }} /></span>
                       <span>{done}/{m.lessons.length} selesai</span>
-                      {!av.complete && <span className="badge badge-amber">{av.avail}/{av.total} tersedia</span>}
+                      {!av.complete && <span className="badge badge-amber">{av.avail}/{av.total} sudah ditulis</span>}
                     </>
                   )}
                 </span>
@@ -152,16 +151,15 @@ export function CurriculumSidebar({ onNavigate }: { onNavigate?: () => void }) {
                   const avail = isAvailable(l.id);
                   const completed = !!s.completedLessons[l.id];
                   const active = currentId === l.id;
-                  const above = rank[l.difficulty] > rank[diff];
                   return (
                     <li key={l.id}>
                       <Link
                         to={`/learn/${l.id}`}
                         onClick={onNavigate}
-                        className={`flex items-center gap-2 rounded-md px-2 py-1 ${active ? "bg-brand-700 font-medium text-white" : avail ? "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800" : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800/60"} ${above && !active ? "opacity-60" : ""}`}
+                        className={`flex items-center gap-2 rounded-md px-2 py-1 ${active ? "bg-brand-700 font-medium text-white" : avail ? "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800" : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800/60"}`}
                         aria-current={active ? "page" : undefined}
                       >
-                        {completed ? <CircleCheck size={14} className={active ? "text-white" : "text-brand-500"} /> : avail ? <Circle size={14} className="text-slate-500" /> : <Lock size={12} className="mx-[1px]" />}
+                        {completed ? <CircleCheck size={14} className={active ? "text-white" : "text-brand-500"} /> : avail ? <Circle size={14} className="text-slate-500" /> : <CircleDashed size={14} className="text-slate-400" aria-label="sedang ditulis" />}
                         <span className="flex-1 truncate">{l.title}</span>
                         {l.difficulty !== "beginner" && <span className={`text-[10px] font-semibold uppercase ${active ? "text-white/90" : "text-violet-500"}`}>{l.difficulty === "intermediate" ? "INT" : "ADV"}</span>}
                       </Link>

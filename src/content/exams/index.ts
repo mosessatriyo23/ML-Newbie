@@ -10,7 +10,7 @@ const FINAL_ASSESSMENT: ExamDef = {
   pick: 0,
   timeLimitMin: 180,
   available: false,
-  unavailableReason: "Dibuka setelah seluruh modul inti (Module 00–16) tersedia, karena soalnya mencakup seluruh workflow Machine Learning. Saat ini baru Module 01 yang lengkap.",
+  unavailableReason: "Bank soal sedang disusun. Ujian ini mencakup seluruh workflow Machine Learning, sehingga soalnya ditulis setelah materi Module 00–16 selesai. Saat ini yang sudah bisa dikerjakan: Diagnostic Pre-Test, Ujian Module 01, dan Coding Exam Python.",
   questions: [],
 };
 

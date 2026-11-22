@@ -1,4 +1,4 @@
-import { Lock, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { mdToText } from "../components/Exercise";
@@ -39,7 +39,7 @@ export default function SearchPage() {
             {results.lessons.map(({ m, l }) => (
               <li key={m.id} className="card p-3">
                 <Link to={`/learn/${m.id}`} className="font-semibold text-brand-700 hover:underline dark:text-brand-400">{m.title}</Link>
-                {!l && <span className="ml-2 badge badge-slate"><Lock size={10} /> belum tersedia</span>}
+                {!l && <span className="ml-2 badge badge-slate">sedang ditulis</span>}
                 <div className="text-xs text-slate-500">Module {getModule(m.moduleId)?.number} — {getModule(m.moduleId)?.title}</div>
                 {l && <div className="mt-1 line-clamp-2 text-sm text-slate-600 dark:text-slate-400">{mdToText(l.definition).replace(/[*`]/g, "").slice(0, 180)}…</div>}
               </li>

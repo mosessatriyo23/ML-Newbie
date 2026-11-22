@@ -99,7 +99,7 @@ function HintLadder({ hints, level, onMore, canSolution, onSolution, solutionSho
           </button>
         )}
         {!solutionShown && (
-          <button type="button" className="btn-outline" onClick={onSolution} disabled={!canSolution} title={canSolution ? "" : "Solusi terbuka setelah 3 hint atau 2 kali mencoba"} data-testid="solution-btn">
+          <button type="button" className="btn-outline" onClick={onSolution} title={canSolution ? "" : "Disarankan mencoba hint dulu, tetapi solusi boleh dibuka kapan saja"} data-testid="solution-btn">
             <Eye size={14} /> Show Solution
           </button>
         )}

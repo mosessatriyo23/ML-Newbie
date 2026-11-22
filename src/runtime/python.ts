@@ -2,7 +2,7 @@
 // - Satu Web Worker dipakai bersama oleh semua editor.
 // - Tombol Stop / timeout menghentikan worker dengan terminate() lalu membuat worker baru,
 //   sehingga infinite loop tidak membuat browser freeze.
-import { DATASET_FILES } from "../content/datasets";
+import { DATASET_FILES, LAZY_DATASET_FILES } from "../content/datasets";
 import { PYODIDE_INDEX_URL, type PyError, type RawRunResult, type TestResult, type WorkerRequest, type WorkerResponse } from "./protocol";
 
 export type RuntimeStatus = "idle" | "loading" | "ready" | "running" | "error";
@@ -49,6 +49,8 @@ class PythonRuntime {
     timer?: ReturnType<typeof setTimeout>;
   } | null = null;
   private uploaded = new Map<string, string | Uint8Array>();
+  /** Dataset besar yang sudah ditulis ke worker saat ini (di-reset bila worker dibuat ulang). */
+  private lazyLoaded = new Set<string>();
   private initReject: ((e: Error) => void) | null = null;
 
   getState() {
@@ -82,6 +84,7 @@ class PythonRuntime {
         this.readyPromise = null;
         reject(new Error(msg));
       };
+      this.lazyLoaded.clear();
       const files = Object.entries(DATASET_FILES).map(([path, content]) => ({ path, content }));
       const assetBase = new URL(".", document.baseURI).href;
       // VITE_PYODIDE_LOCAL=1: runtime & paket di-host bersama situs (folder pyodide/), selain itu dari CDN resmi.
@@ -166,6 +169,18 @@ class PythonRuntime {
   async run(code: string, opts: RunOptions = {}): Promise<RunResult> {
     if (this.current) throw new Error("Masih ada kode yang sedang berjalan. Tunggu atau tekan Stop.");
     await this.ensureReady();
+    // Dataset besar diunduh hanya ketika nama filenya muncul di kode.
+    for (const f of LAZY_DATASET_FILES) {
+      if (!code.includes(f) || this.lazyLoaded.has(f)) continue;
+      opts.onStatus?.(`Mengunduh dataset ${f}…`);
+      try {
+        const text = await fetchDatasetText(f);
+        await this.request({ type: "writeFile", id: this.nextId++, path: f, content: text });
+        this.lazyLoaded.add(f);
+      } catch (e) {
+        opts.onStderr?.(`Gagal mengunduh dataset ${f}: ${String(e)}\n`);
+      }
+    }
     if (this.current) throw new Error("Masih ada kode yang sedang berjalan. Tunggu atau tekan Stop.");
     const id = this.nextId++;
     this.setState({ status: "running", message: "Menjalankan kode…" });
@@ -236,6 +251,22 @@ class PythonRuntime {
   uploadedNames() {
     return [...this.uploaded.keys()];
   }
+}
+
+const datasetCache = new Map<string, Promise<string>>();
+
+/** Isi dataset: dari bundle (dataset kecil) atau diunduh dari folder datasets/ situs (dataset besar). */
+export function fetchDatasetText(file: string): Promise<string> {
+  if (DATASET_FILES[file] !== undefined) return Promise.resolve(DATASET_FILES[file]);
+  if (!datasetCache.has(file)) {
+    const p = fetch(new URL(`datasets/${file}`, document.baseURI).href).then((r) => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.text();
+    });
+    p.catch(() => datasetCache.delete(file));
+    datasetCache.set(file, p);
+  }
+  return datasetCache.get(file)!;
 }
 
 export const python = new PythonRuntime();

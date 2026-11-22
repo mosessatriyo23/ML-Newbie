@@ -28,8 +28,10 @@ py.setStdout({ write: (b: Uint8Array) => b.length });
 py.setStderr({ write: (b: Uint8Array) => b.length });
 py.runPython(readFileSync(join(root, "src/runtime/harness.py"), "utf8"));
 const dataDir = join(root, "src/content/data");
+const realDir = join(root, "public/datasets");
 for (const f of readdirSync(dataDir)) py.FS.writeFile(f, readFileSync(join(dataDir, f), "utf8"));
-const initialFiles = new Set(readdirSync(dataDir));
+for (const f of readdirSync(realDir)) py.FS.writeFile(f, readFileSync(join(realDir, f), "utf8"));
+const initialFiles = new Set([...readdirSync(dataDir), ...readdirSync(realDir)]);
 let seaborn = false;
 
 interface Res {
@@ -46,7 +48,8 @@ function cleanFs() {
     const st = py.FS.stat(n);
     if (py.FS.isFile(st.mode)) py.FS.unlink(n);
   }
-  for (const f of initialFiles) py.FS.writeFile(f, readFileSync(join(dataDir, f), "utf8"));
+  for (const f of readdirSync(dataDir)) py.FS.writeFile(f, readFileSync(join(dataDir, f), "utf8"));
+  for (const f of readdirSync(realDir)) py.FS.writeFile(f, readFileSync(join(realDir, f), "utf8"));
 }
 
 async function run(code: string, tests?: PyTest[]): Promise<Res> {
@@ -240,6 +243,13 @@ if (!filter || filter === "refs") {
   for (const e of EXAMS) {
     for (const q of e.questions) check(`exam ${q.id}`, q.lessonId);
     for (const t of e.codeTasks ?? []) check(`exam ${t.id}`, t.lessonId);
+  }
+  for (const p of PROJECTS) {
+    if (!p.starter) continue;
+    const pr = await run(p.starter);
+    if (pr.error) fail(`project ${p.id} starter`, pr.error.traceback);
+    else ok();
+    if (p.dataset && !p.starter.includes(p.dataset)) fail(`project ${p.id}`, "starter tidak memakai dataset proyek");
   }
   const r = await run(ML_WORKFLOW_CODE);
   if (r.error) fail("ML_WORKFLOW_CODE", r.error.traceback);

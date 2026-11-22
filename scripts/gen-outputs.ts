@@ -14,9 +14,11 @@ py.setStdout({ write: (b: Uint8Array) => b.length });
 py.setStderr({ write: (b: Uint8Array) => b.length });
 py.runPython(readFileSync(join(root, "src/runtime/harness.py"), "utf8"));
 const dataDir = join(root, "src/content/data");
+const realDir = join(root, "public/datasets");
 const MPL = /^\s*(import\s+(matplotlib|seaborn)|from\s+(matplotlib|seaborn)[\s.])/m;
 async function run(code: string) {
   for (const f of readdirSync(dataDir)) py.FS.writeFile(f, readFileSync(join(dataDir, f), "utf8"));
+for (const f of readdirSync(realDir)) py.FS.writeFile(f, readFileSync(join(realDir, f), "utf8"));
   await py.loadPackagesFromImports(code);
   const fn = py.globals.get("run_user_code");
   const r = JSON.parse(fn(code, null, MPL.test(code)));

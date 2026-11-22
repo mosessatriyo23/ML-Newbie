@@ -1,4 +1,4 @@
-import { CheckCircle2, ChevronLeft, ChevronRight, Clock, GraduationCap, Lock, Timer, XCircle } from "lucide-react";
+import { CheckCircle2, ChevronLeft, ChevronRight, Clock, GraduationCap, Timer, XCircle } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ExerciseView, lessonTitle } from "../components/Exercise";
@@ -325,15 +325,15 @@ export default function AssessmentsPage() {
                   <div className="flex items-start gap-2"><GraduationCap size={18} className="mt-0.5 text-brand-600" /><div className="font-semibold">{e.title}</div></div>
                   <p className="mt-1 flex-1 text-sm text-slate-500">{e.description}</p>
                   {last && <div className="mt-2 text-xs text-slate-500">Terakhir: {last.percent}% ({last.mode}, {new Date(last.at).toLocaleDateString("id-ID")})</div>}
-                  {e.available ? <Link to={`/assessments/${e.id}`} className="btn-primary mt-3 self-start" data-testid={`open-${e.id}`}>Buka</Link> : <div className="mt-3 flex items-start gap-1.5 text-sm text-amber-700 dark:text-amber-300"><Lock size={14} className="mt-0.5 shrink-0" /> {e.unavailableReason}</div>}
+                  {e.available ? <Link to={`/assessments/${e.id}`} className="btn-primary mt-3 self-start" data-testid={`open-${e.id}`}>Buka</Link> : <div className="mt-3 text-sm text-slate-500">{e.unavailableReason}</div>}
                 </div>
               );
             })}
             {g.title === "Module Examinations" &&
               lockedModules.map((m) => (
-                <div key={m.id} className="card p-4 opacity-70">
+                <div key={m.id} className="card p-4">
                   <div className="font-semibold">Ujian Module {m.number} — {m.title}</div>
-                  <div className="mt-2 flex items-center gap-1.5 text-sm text-slate-500"><Lock size={14} /> Tersedia setelah materi modul ini lengkap (Fase {m.phase}).</div>
+                  <div className="mt-2 text-sm text-slate-500">Bank soal ujian modul ini sedang disusun bersama materinya. Sementara itu, coba Diagnostic Pre-Test yang mencakup topik ini.</div>
                 </div>
               ))}
           </div>

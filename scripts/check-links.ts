@@ -3,13 +3,16 @@
 // Jalankan: NODE_USE_ENV_PROXY=1 node --experimental-strip-types scripts/check-links.ts
 import { ALL_LESSONS } from "../src/content/lessons/index.ts";
 import { MODULE_REFERENCES } from "../src/content/moduleRefs.ts";
-import { DATASETS } from "../src/content/datasets-meta.ts";
+import { ALL_DATASETS } from "../src/content/datasets-meta.ts";
 
 const urls = new Map<string, string[]>();
 const add = (url: string, where: string) => urls.set(url, [...(urls.get(url) ?? []), where]);
 for (const l of ALL_LESSONS) for (const r of l.references) add(r.url, l.id);
 for (const [m, refs] of Object.entries(MODULE_REFERENCES)) for (const r of refs) add(r.url, m);
-for (const d of DATASETS) if (d.sourceUrl) add(d.sourceUrl, `dataset ${d.file}`);
+for (const d of ALL_DATASETS) {
+  if (d.sourceUrl) add(d.sourceUrl, `dataset ${d.file}`);
+  if (d.kaggleUrl) add(d.kaggleUrl, `dataset ${d.file} (Kaggle)`);
+}
 add("https://www.kaggle.com/learn/python", "refs");
 add("https://developers.google.com/machine-learning/crash-course/linear-regression/gradient-descent", "while-loop");
 

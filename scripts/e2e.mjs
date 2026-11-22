@@ -121,11 +121,11 @@ await step("Latihan: jawaban salah → Incorrect + Error Notebook", async () => 
   await ex.getByTestId("feedback-incorrect").waitFor({ timeout: 60000 });
 });
 
-await step("Hint bertahap dan solusi terkunci sampai 3 hint", async () => {
+await step("Hint bertahap tersedia dan solusi bebas dibuka", async () => {
   const ex = page.getByTestId("exercise-py-syntax-ex1");
-  expect(await ex.getByTestId("solution-btn").isDisabled(), "solusi tidak terkunci");
+  expect(!(await ex.getByTestId("solution-btn").isDisabled()), "solusi masih terkunci");
   for (let i = 0; i < 3; i++) await ex.getByTestId("hint-btn").click();
-  expect(!(await ex.getByTestId("solution-btn").isDisabled()), "solusi tidak terbuka setelah 3 hint");
+  expect((await ex.textContent()).includes("Hint 3"), "hint ke-3 tidak tampil");
 });
 
 await step("Latihan: jawaban benar → Correct", async () => {
@@ -268,6 +268,30 @@ await step("Upload CSV ke Playground dan dibaca pandas", async () => {
   await page.keyboard.insertText('import pandas as pd\nprint(pd.read_csv("upload_test.csv")["b"].sum())');
   await page.getByTestId("run-btn").click();
   await page.waitForFunction(() => document.querySelector("[data-testid=stdout]")?.textContent.trim() === "6", null, { timeout: 60000 });
+});
+
+await step("Dataset nyata (UCI) diunduh saat dipakai dan dibaca pandas", async () => {
+  await go("/playground");
+  await page.getByTestId("use-heart_disease.csv").click();
+  await page.getByTestId("run-btn").click();
+  await page.waitForFunction(() => /Selesai dalam/.test(document.querySelector("[data-testid=output-panel]")?.textContent ?? ""), null, { timeout: 120000 });
+  const out = await page.getByTestId("stdout").textContent();
+  expect(out.includes("(303, 14)") && out.includes("6 missing value"), `output tidak sesuai: ${out}`);
+});
+
+await step("Proyek: starter code terbuka di Playground dan berjalan", async () => {
+  await go("/projects");
+  await page.getByTestId("start-credit-risk").click();
+  await page.getByTestId("playground").waitFor();
+  await page.getByTestId("run-btn").click();
+  await page.waitForFunction(() => /Train: \(24000, 23\)/.test(document.querySelector("[data-testid=stdout]")?.textContent ?? ""), null, { timeout: 120000 });
+});
+
+await step("Tidak ada ikon kunci di halaman kurikulum", async () => {
+  await go("/learn");
+  const t = await page.locator("main").textContent();
+  expect(!/belum dibuka|terkunci/i.test(t), "masih ada teks terkunci");
+  expect((await page.locator("main .lucide-lock").count()) === 0, "masih ada ikon kunci");
 });
 
 await step("Ujian diagnostik (Exam Mode) selesai dengan nilai & pembahasan", async () => {

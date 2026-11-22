@@ -1,4 +1,4 @@
-import { CircleCheck, Lock } from "lucide-react";
+import { CircleCheck, CircleDashed } from "lucide-react";
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { isAvailable, moduleAvailability } from "../content";
@@ -22,7 +22,7 @@ export default function LearnIndex() {
     <div className="max-w-5xl px-4 py-6 sm:px-8">
       <h1 className="text-3xl font-bold">Kurikulum ML Academy</h1>
       <p className="mt-2 text-slate-600 dark:text-slate-400">
-        18 modul dari dasar Python hingga deployment. Kurikulum lengkap ditampilkan sejak awal, dan setiap subbab diberi status yang jujur: <span className="badge badge-brand">Tersedia</span> berarti materinya lengkap dan seluruh kodenya telah diuji; <span className="badge badge-slate"><Lock size={10} /> Belum tersedia</span> berarti masih dalam pengembangan.
+        18 modul dari dasar Python hingga deployment. Semua halaman bebas diakses dalam urutan apa pun — tidak ada yang dikunci. Penanda status hanya memberi tahu apakah isinya sudah ditulis: <span className="badge badge-brand">Lengkap</span> berarti materi, latihan, dan kuisnya sudah ada dan seluruh kodenya telah diuji; <CircleDashed size={13} className="inline text-slate-400" /> <span className="badge badge-slate">sedang ditulis</span> berarti halamannya baru berisi ringkasan modul dan referensi resmi.
       </p>
       <div className="mt-5 grid gap-3 md:grid-cols-2">
         {PHASES.map((p) => (
@@ -44,7 +44,7 @@ export default function LearnIndex() {
                   <h2 className="text-lg font-bold">Module {m.number} — {m.title}</h2>
                   <p className="text-sm text-slate-500">{m.description}</p>
                   <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-                    {av.complete ? <span className="badge badge-brand">Lengkap — {av.total} subbab tersedia</span> : av.avail > 0 ? <span className="badge badge-amber">{av.avail}/{av.total} subbab tersedia</span> : <span className="badge badge-slate"><Lock size={10} /> Belum tersedia (Fase {m.phase})</span>}
+                    {av.complete ? <span className="badge badge-brand">Lengkap — {av.total} subbab</span> : av.avail > 0 ? <span className="badge badge-amber">{av.avail}/{av.total} subbab sudah ditulis</span> : <span className="badge badge-slate">materi sedang ditulis</span>}
                     {av.avail > 0 && <span className="text-slate-500">{done}/{m.lessons.length} selesai</span>}
                   </div>
                 </div>
@@ -56,7 +56,7 @@ export default function LearnIndex() {
                     <li key={l.id}>
                       <Link to={`/learn/${l.id}`} className={`flex items-center gap-2 rounded-md px-2 py-1 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 ${a ? "" : "text-slate-500 dark:text-slate-400"}`}>
                         <span className="w-5 text-right text-xs text-slate-500 dark:text-slate-400">{i + 1}</span>
-                        {s.completedLessons[l.id] ? <CircleCheck size={14} className="text-brand-500" /> : !a ? <Lock size={12} /> : <span className="h-3.5 w-3.5 rounded-full border border-slate-300" />}
+                        {s.completedLessons[l.id] ? <CircleCheck size={14} className="text-brand-500" /> : !a ? <CircleDashed size={14} className="text-slate-400" aria-label="sedang ditulis" /> : <span className="h-3.5 w-3.5 rounded-full border border-slate-300" />}
                         <span className="flex-1">{l.title}</span>
                         {l.difficulty !== "beginner" && <span className="badge badge-purple">{DIFFICULTY_LABEL[l.difficulty]}</span>}
                       </Link>

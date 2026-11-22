@@ -8,7 +8,7 @@ import housePrices from "./data/house_prices.csv?raw";
 import iris from "./data/iris.csv?raw";
 import studentScores from "./data/student_scores.csv?raw";
 
-export { DATASETS, parseCsv, type DatasetInfo } from "./datasets-meta";
+export { ALL_DATASETS, DATASETS, LAZY_DATASET_FILES, REAL_DATASETS, parseCsv, type DatasetInfo } from "./datasets-meta";
 
 export const DATASET_FILES: Record<string, string> = {
   "student_scores.csv": studentScores,

@@ -8,10 +8,11 @@ Website pembelajaran Python, Data Science, dan Machine Learning interaktif berba
 
 | Bagian | Status |
 | --- | --- |
-| Kurikulum 17 modul / 286 subbab | Ditampilkan lengkap; subbab yang belum dibuat ditandai **belum tersedia** |
+| Kurikulum 17 modul / 286 subbab | Semua halaman bebas diakses tanpa kunci; subbab yang isinya belum ditulis diberi label **sedang ditulis** |
 | Module 01 — Python Fundamentals (20 subbab) | **Lengkap**: tiap subbab punya 3–5 contoh bertahap, penjelasan baris demi baris, parameter, kesalahan umum, 5 latihan (Level 3–5), 5 kuis, mini challenge, ringkasan, cheat sheet, flashcard, referensi resmi |
 | Diagnostic Pre-Test (30 soal), Ujian Module 01 (bank 31 soal, paket A/B/C/acak), Coding Exam Python (8 tugas) | Tersedia |
-| Final Assessment, proyek end-to-end | Terkunci sampai modul prasyaratnya tersedia |
+| 11 proyek end-to-end | Bebas dikerjakan; 9 proyek punya dataset, checklist, dan starter code teruji |
+| Final Assessment | Bank soal sedang disusun |
 | Workflow ML (16 tahap), Cheat Sheet (13 kategori, 85 contoh teruji), Visual Lab (9 visualisasi), Playground | Tersedia |
 
 ## Menjalankan
@@ -69,5 +70,11 @@ Menambah lesson baru: buat file di `src/content/lessons/<modul>/`, daftarkan di 
 
 ## Dataset
 
-Asli (CC BY 4.0, UCI Machine Learning Repository, salinan dari scikit-learn): Iris, Breast Cancer Wisconsin (Diagnostic).
-Sintetis (dibuat `scripts/generate_datasets.py`, seed 42): Student Scores, Customer Churn, House Prices, Customer Segmentation.
+**Asli — 11 dataset** (CC BY 4.0, UCI Machine Learning Repository; semuanya juga populer di Kaggle, tautan Kaggle ada di Playground):
+Iris, Breast Cancer Wisconsin (salinan dari scikit-learn), serta Heart Disease, Wine Quality (Red), Student Performance,
+Auto MPG, Bank Marketing, Online Shoppers Purchasing Intention, Wholesale Customers, Adult/Census Income, dan
+Default of Credit Card Clients (diunduh dari sumber asli oleh `scripts/fetch_real_datasets.py`, disimpan di
+`public/datasets/` dan dimuat ke Python hanya saat dipakai). Tidak perlu login Kaggle atau API key.
+
+**Sintetis** (dibuat `scripts/generate_datasets.py`, seed 42, untuk latihan terkontrol): Student Scores, Customer Churn,
+House Prices, Customer Segmentation.

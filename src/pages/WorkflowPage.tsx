@@ -1,4 +1,4 @@
-import { AlertTriangle, ArrowRight, Lock, RefreshCw, ShieldCheck } from "lucide-react";
+import { AlertTriangle, ArrowRight, RefreshCw, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CodeBlock } from "../components/CodeBlock";
@@ -82,7 +82,7 @@ export default function WorkflowPage() {
               <span key={l}>
                 {k > 0 && " · "}
                 <Link to={`/learn/${l}`} className="text-brand-700 underline dark:text-brand-400">{lessonTitle(l)}</Link>
-                {!isAvailable(l) && <Lock size={11} className="ml-0.5 inline text-slate-500 dark:text-slate-400" />}
+                {!isAvailable(l) && <span className="ml-1 text-xs text-slate-500">(sedang ditulis)</span>}
               </span>
             ))}
           </div>

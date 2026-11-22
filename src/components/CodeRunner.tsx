@@ -1,6 +1,6 @@
 import { Download, Eraser, Play, RotateCcw, Square, Table } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { DATASET_FILES } from "../content/datasets";
+import { ALL_DATASETS } from "../content/datasets";
 import { clearCode, getState, saveCode } from "../engine/store";
 import type { PyTest } from "../types";
 import type { RunResult } from "../runtime/python";
@@ -41,7 +41,7 @@ export function CodeRunner({ code, onCodeChange, onReset, title = "Try It Yourse
   const { out, run, stop, clear, runtime } = usePythonRun();
   const [showData, setShowData] = useState(false);
   const busy = out.status === "loading" || out.status === "running";
-  const datasets = useMemo(() => Object.keys(DATASET_FILES).filter((f) => code.includes(f)), [code]);
+  const datasets = useMemo(() => ALL_DATASETS.map((d) => d.file).filter((f) => code.includes(f)), [code]);
   const codeRef = useRef(code);
   codeRef.current = code;
 

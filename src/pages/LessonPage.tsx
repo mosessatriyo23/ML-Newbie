@@ -1,4 +1,4 @@
-import { AlertTriangle, ArrowLeft, ArrowRight, Bookmark, BookmarkCheck, CheckCircle2, Clock, ExternalLink, Lightbulb, Lock, Target } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, Bookmark, BookmarkCheck, CheckCircle2, Clock, ExternalLink, Lightbulb, PencilLine, Target } from "lucide-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CodeBlock } from "../components/CodeBlock";
@@ -311,7 +311,7 @@ function LessonContent({ lesson }: { lesson: Lesson }) {
         </Section>
 
         <Section id="exercises" n={sectionNo("exercises")} title="Latihan coding">
-          <p className="text-sm text-slate-500">Jawaban dinilai dengan <b>menjalankan kode dan test case</b> — solusi alternatif yang benar tetap diterima. Hint dibuka bertahap; solusi terbuka setelah 3 hint atau 2 kali mencoba.</p>
+          <p className="text-sm text-slate-500">Jawaban dinilai dengan <b>menjalankan kode dan test case</b> — solusi alternatif yang benar tetap diterima. Hint tersedia bertahap; solusi bisa dibuka kapan saja — tetapi cobalah dulu, karena menulis sendiri adalah cara tercepat untuk mengingat.</p>
           {byLevel.map(({ lv, items }) =>
             items.length ? (
               <div key={lv} className="mt-5">
@@ -368,7 +368,7 @@ function LessonContent({ lesson }: { lesson: Lesson }) {
             <CheckCircle2 size={15} /> {completed ? "Selesai ✓" : "Mark as Complete"}
           </button>
           {next ? (
-            <Link to={`/learn/${next.id}`} className="btn-outline" data-testid="next-lesson">{next.title} {!isAvailable(next.id) && <Lock size={12} />} <ArrowRight size={15} /></Link>
+            <Link to={`/learn/${next.id}`} className="btn-outline" data-testid="next-lesson">{next.title} <ArrowRight size={15} /></Link>
           ) : <span />}
         </div>
       </article>
@@ -428,10 +428,10 @@ function PlannedLesson({ id }: { id: string }) {
     <div className="max-w-3xl px-4 py-8 sm:px-8" data-testid="planned-lesson">
       <nav className="mb-3 text-xs text-slate-500"><Link to="/learn" className="hover:underline">Learn</Link> / Module {mod.number} — {mod.title}</nav>
       <h1 className="text-3xl font-bold">{meta.title}</h1>
-      <div className="mt-4 rounded-xl border border-amber-300 bg-amber-50 p-4 text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-100">
-        <div className="flex items-center gap-2 font-semibold"><Lock size={16} /> Materi ini belum tersedia</div>
+      <div className="mt-4 rounded-xl border border-sky-200 bg-sky-50 p-4 text-sky-900 dark:border-sky-900 dark:bg-sky-950/40 dark:text-sky-100">
+        <div className="flex items-center gap-2 font-semibold"><PencilLine size={16} /> Materi subbab ini sedang ditulis</div>
         <p className="mt-1 text-sm">
-          Subbab ini dijadwalkan pada <b>Fase {mod.phase}</b> pengembangan. Sesuai standar ML Academy, sebuah subbab baru ditandai tersedia setelah memiliki penjelasan mendalam, 3–5 contoh kode yang telah diuji, 5 latihan coding, 5 soal kuis, mini challenge, ringkasan, dan referensi. Kami tidak menampilkan materi setengah jadi.
+          Tidak ada yang dikunci di ML Academy — semua halaman, latihan, dan dataset bebas diakses dalam urutan apa pun. Hanya saja, penjelasan, contoh kode teruji, latihan, dan kuis untuk subbab ini belum selesai ditulis. Sambil menunggu, pelajari dari sumber resmi di bawah dan bereksperimen di <Link to="/playground" className="font-medium underline">Playground</Link> dengan dataset nyata.
         </p>
       </div>
       <h2 className="mt-6 text-lg font-semibold">Tentang modul ini</h2>

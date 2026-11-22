@@ -1,11 +1,13 @@
 import { Database, Download, FileUp, FolderOpen, RefreshCw, RotateCcw, Save, Trash2 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { CodeRunner, downloadText } from "../components/CodeRunner";
 import { DatasetPreview } from "../components/DatasetPreview";
 import { useRuntimeState } from "../components/usePythonRun";
-import { DATASETS, DATASET_FILES } from "../content/datasets";
+import { ALL_DATASETS, type DatasetInfo } from "../content/datasets";
+import { PROJECTS } from "../content/projects";
 import { PYODIDE_VERSION } from "../runtime/protocol";
-import { python } from "../runtime/python";
+import { fetchDatasetText, python } from "../runtime/python";
 import { clearCode, getState, saveCode, useStore } from "../engine/store";
 
 const DEFAULT_CODE = `import pandas as pd
@@ -23,13 +25,37 @@ plt.title("Jam belajar vs nilai akhir")
 plt.show()
 `;
 
-const LIBS = ["numpy", "pandas", "matplotlib", "seaborn (via micropip)", "scikit-learn", "scipy", "statsmodels", "xgboost", "joblib"];
+export function starterFor(d: DatasetInfo) {
+  const sep = d.sep ? `, sep="${d.sep}"` : "";
+  return `import pandas as pd\n\n# ${d.name} — ${d.kind === "real" ? "dataset asli" : "dataset sintetis"}\ndf = pd.read_csv("${d.file}"${sep})\nprint(df.shape)\nprint(df.head())\nprint(df.isnull().sum().sum(), "missing value")\n`;
+}
+
+const LIBS = ["numpy", "pandas", "matplotlib", "seaborn", "scikit-learn", "scipy", "statsmodels", "xgboost", "joblib"];
 
 export default function PlaygroundPage() {
   const [code, setCode] = useState(() => getState().code["pg:current"] ?? DEFAULT_CODE);
   const [files, setFiles] = useState<{ name: string; size: number }[] | null>(null);
-  const [preview, setPreview] = useState<{ file: string; text: string } | null>({ file: "student_scores.csv", text: DATASET_FILES["student_scores.csv"] });
+  const [params] = useSearchParams();
+  const [preview, setPreview] = useState<string | null>("student_scores.csv");
+  const [filter, setFilter] = useState<"real" | "synthetic">("real");
+  useEffect(() => {
+    // /playground?file=nama.csv — dibuka dari halaman Projects
+    const proj = PROJECTS.find((x) => x.id === params.get("project"));
+    if (proj?.starter) {
+      setCode(proj.starter);
+      if (proj.dataset) setPreview(proj.dataset);
+      setMsg(`Starter code proyek "${proj.title}" dimuat. Tekan Run untuk mulai.`);
+      return;
+    }
+    const f = params.get("file");
+    const d = ALL_DATASETS.find((x) => x.file === f);
+    if (d) {
+      setCode(starterFor(d));
+      setPreview(d.file);
+    }
+  }, [params]);
   const [msg, setMsg] = useState("");
+  const [uploadedText, setUploadedText] = useState<{ file: string; text: string } | null>(null);
   const [snippetName, setSnippetName] = useState("");
   const fileInput = useRef<HTMLInputElement>(null);
   const rt = useRuntimeState();
@@ -52,7 +78,8 @@ export default function PlaygroundPage() {
     const text = await f.text();
     setMsg(`Mengunggah ${f.name}…`);
     await python.writeFile(f.name, text);
-    setPreview({ file: f.name, text });
+    setUploadedText({ file: f.name, text });
+    setPreview(f.name);
     setMsg(`✓ ${f.name} tersedia. Baca dengan: pd.read_csv("${f.name}")`);
     void refreshFiles();
   };
@@ -140,21 +167,37 @@ export default function PlaygroundPage() {
           </div>
           <div className="card p-4">
             <h2 className="flex items-center gap-2 font-semibold"><Database size={16} /> Dataset latihan</h2>
-            <ul className="mt-2 space-y-3 text-sm">
-              {DATASETS.filter((d) => !d.file.startsWith("data")).map((d) => (
+            <div className="mt-2 flex gap-1" role="tablist">
+              <button type="button" role="tab" aria-selected={filter === "real"} className={`badge cursor-pointer px-3 py-1 ${filter === "real" ? "badge-blue" : "badge-slate"}`} onClick={() => setFilter("real")}>Asli ({ALL_DATASETS.filter((d) => d.kind === "real").length})</button>
+              <button type="button" role="tab" aria-selected={filter === "synthetic"} className={`badge cursor-pointer px-3 py-1 ${filter === "synthetic" ? "badge-amber" : "badge-slate"}`} onClick={() => setFilter("synthetic")}>Sintetis ({ALL_DATASETS.filter((d) => d.kind === "synthetic" && !d.file.startsWith("data")).length})</button>
+            </div>
+            <p className="mt-2 text-xs text-slate-500">{filter === "real" ? "Data nyata dari UCI Machine Learning Repository (CC BY 4.0) — dataset yang sama juga populer di Kaggle. Tidak perlu login atau API key; dataset besar diunduh otomatis saat pertama dipakai." : "Data buatan ML Academy untuk latihan terkontrol (misalnya missing value dan duplikat yang disengaja)."}</p>
+            <ul className="mt-2 space-y-3 text-sm" data-testid="dataset-list">
+              {ALL_DATASETS.filter((d) => d.kind === filter && !d.file.startsWith("data")).map((d) => (
                 <li key={d.file} className="rounded-lg border border-slate-200 p-2 dark:border-slate-800">
                   <div className="flex items-center gap-2">
                     <span className="flex-1 font-semibold">{d.name}</span>
-                    <span className={`badge ${d.kind === "real" ? "badge-blue" : "badge-amber"}`}>{d.kind === "real" ? "Asli" : "Sintetis"}</span>
+                    {d.rows && <span className="text-xs text-slate-500">{d.rows.toLocaleString("id-ID")} baris</span>}
                   </div>
-                  <div className="font-mono text-xs text-slate-500">{d.file}</div>
+                  <div className="font-mono text-xs text-slate-500">{d.file}{d.sep ? ` (sep="${d.sep}")` : ""}</div>
                   <div className="mt-1 text-xs">{d.description}</div>
                   <div className="mt-1 text-xs text-slate-500">Tugas: {d.task}</div>
-                  <div className="mt-1 text-xs text-slate-500">Sumber: {d.source}{d.sourceUrl && <> (<a className="underline" href={d.sourceUrl} target="_blank" rel="noreferrer">UCI</a>)</>} · Lisensi: {d.license}</div>
-                  <div className="mt-2 flex gap-2">
-                    <button type="button" className="btn-ghost" onClick={() => setPreview({ file: d.file, text: DATASET_FILES[d.file] })}>Lihat</button>
-                    <button type="button" className="btn-ghost" onClick={() => setCode(`import pandas as pd\n\ndf = pd.read_csv("${d.file}")\nprint(df.head())\nprint(df.shape)\n`)}>Pakai di editor</button>
-                    <button type="button" className="btn-ghost" onClick={() => downloadText(d.file, DATASET_FILES[d.file], "text/csv")}><Download size={13} /> CSV</button>
+                  <div className="mt-1 text-xs text-slate-500">Lisensi: {d.license}</div>
+                  <div className="mt-1 flex flex-wrap gap-x-3 text-xs">
+                    {d.sourceUrl && <a className="text-brand-700 underline dark:text-brand-400" href={d.sourceUrl} target="_blank" rel="noreferrer">Sumber asli (UCI)</a>}
+                    {d.kaggleUrl && <a className="text-brand-700 underline dark:text-brand-400" href={d.kaggleUrl} target="_blank" rel="noreferrer">Lihat di Kaggle</a>}
+                  </div>
+                  <details className="mt-1 text-xs">
+                    <summary className="cursor-pointer text-slate-500">Data dictionary & sitasi</summary>
+                    <table className="mt-1 w-full">
+                      <tbody>{d.columns.map(([c, desc]) => <tr key={c} className="border-t border-slate-100 align-top dark:border-slate-800"><td className="py-0.5 pr-2 font-mono">{c}</td><td>{desc}</td></tr>)}</tbody>
+                    </table>
+                    <p className="mt-1 text-slate-500">{d.source}</p>
+                  </details>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <button type="button" className="btn-ghost" onClick={() => setPreview(d.file)}>Lihat</button>
+                    <button type="button" className="btn-ghost" onClick={() => setCode(starterFor(d))} data-testid={`use-${d.file}`}>Pakai di editor</button>
+                    <button type="button" className="btn-ghost" onClick={async () => downloadText(d.file, await fetchDatasetText(d.file), "text/csv")}><Download size={13} /> CSV</button>
                   </div>
                 </li>
               ))}
@@ -165,7 +208,7 @@ export default function PlaygroundPage() {
       {preview && (
         <div className="card mt-6 overflow-hidden">
           <div className="flex items-center justify-between px-4 py-2"><h2 className="font-semibold">Dataset viewer</h2><button type="button" className="btn-ghost" onClick={() => setPreview(null)}>Tutup</button></div>
-          <DatasetPreview file={preview.file} text={preview.text} rows={15} />
+          <DatasetPreview file={preview} text={uploadedText?.file === preview ? uploadedText.text : undefined} rows={15} />
         </div>
       )}
     </div>
