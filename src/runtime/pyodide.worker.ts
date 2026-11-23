@@ -11,6 +11,9 @@ let pyodide: any = null;
 let seabornInstalled = false;
 let assetBase = "";
 const SEABORN_WHEEL = "wheels/seaborn-0.13.2-py3-none-any.whl";
+// openpyxl (engine Excel untuk pandas) tidak termasuk distribusi Pyodide; wheel-nya di-host bersama situs.
+const EXCEL_WHEELS = ["wheels/et_xmlfile-2.0.0-py3-none-any.whl", "wheels/openpyxl-3.1.5-py2.py3-none-any.whl"];
+let excelInstalled = false;
 const decoder = new TextDecoder();
 const errDecoder = new TextDecoder();
 
@@ -48,6 +51,7 @@ function writeFile(path: string, content: string | Uint8Array) {
 }
 
 const SEABORN_RE = /^\s*(import\s+seaborn|from\s+seaborn\s+import)/m;
+const EXCEL_RE = /read_excel|to_excel|ExcelWriter|ExcelFile|^\s*(import|from)\s+openpyxl/m;
 const MPL_RE = /^\s*(import\s+(matplotlib|seaborn)|from\s+(matplotlib|seaborn)[\s.])/m;
 
 async function ensurePackages(code: string) {
@@ -66,6 +70,17 @@ async function ensurePackages(code: string) {
       await micropip.install("seaborn");
     }
     seabornInstalled = true;
+  }
+  if (EXCEL_RE.test(code) && !excelInstalled) {
+    post({ type: "status", text: "Memuat paket: openpyxl (engine Excel)…" });
+    await pyodide.loadPackage(["micropip", "pandas"], { messageCallback: onMsg, errorCallback: onMsg });
+    const micropip = pyodide.pyimport("micropip");
+    try {
+      await micropip.install(EXCEL_WHEELS.map((w) => new URL(w, assetBase).href));
+    } catch {
+      await micropip.install("openpyxl");
+    }
+    excelInstalled = true;
   }
   if (MPL_RE.test(code)) await pyodide.loadPackage(["matplotlib"], { messageCallback: onMsg, errorCallback: onMsg });
 }

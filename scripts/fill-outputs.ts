@@ -17,10 +17,16 @@ py.runPython(readFileSync(join(root, "src/runtime/harness.py"), "utf8"));
 const dirs = [join(root, "src/content/data"), join(root, "public/datasets")];
 const MPL = /^\s*(import\s+(matplotlib|seaborn)|from\s+(matplotlib|seaborn)[\s.])/m;
 let seaborn = false;
+let excel = false;
 
 async function run(code: string): Promise<string> {
   for (const d of dirs) for (const f of readdirSync(d)) py.FS.writeFile(f, readFileSync(join(d, f), "utf8"));
   await py.loadPackagesFromImports(code);
+  if (/read_excel|to_excel|ExcelWriter|ExcelFile|^\s*(import|from)\s+openpyxl/m.test(code) && !excel) {
+    await py.loadPackage(["micropip", "pandas"]);
+    await py.pyimport("micropip").install(["et_xmlfile-2.0.0-py3-none-any.whl", "openpyxl-3.1.5-py2.py3-none-any.whl"].map((w) => pathToFileURL(join(root, "public/wheels", w)).href));
+    excel = true;
+  }
   if (/^\s*(import seaborn|from seaborn)/m.test(code) && !seaborn) {
     await py.loadPackage(["micropip"]);
     await py.pyimport("micropip").install(pathToFileURL(join(root, "public/wheels/seaborn-0.13.2-py3-none-any.whl")).href);
