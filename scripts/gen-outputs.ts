@@ -20,6 +20,7 @@ async function run(code: string) {
   for (const f of readdirSync(dataDir)) py.FS.writeFile(f, readFileSync(join(dataDir, f), "utf8"));
 for (const f of readdirSync(realDir)) py.FS.writeFile(f, readFileSync(join(realDir, f), "utf8"));
   await py.loadPackagesFromImports(code);
+  if (/^\s*(import|from)\s+sklearn/m.test(code)) await py.loadPackage(["pandas"]);
   const fn = py.globals.get("run_user_code");
   const r = JSON.parse(fn(code, null, MPL.test(code)));
   fn.destroy();

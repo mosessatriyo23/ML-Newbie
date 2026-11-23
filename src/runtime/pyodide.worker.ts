@@ -59,6 +59,8 @@ async function ensurePackages(code: string) {
     if (m.startsWith("Loading") || m.startsWith("Loaded")) post({ type: "status", text: m.replace("Loading", "Memuat paket:").replace("Loaded", "Paket siap:") });
   };
   await pyodide.loadPackagesFromImports(code, { messageCallback: onMsg, errorCallback: onMsg });
+  // scikit-learn memakai pandas untuk as_frame=True / set_output(transform="pandas") tanpa impor eksplisit.
+  if (/^\s*(import|from)\s+sklearn/m.test(code)) await pyodide.loadPackage(["pandas"], { messageCallback: onMsg, errorCallback: onMsg });
   if (SEABORN_RE.test(code) && !seabornInstalled) {
     post({ type: "status", text: "Memuat paket: seaborn (via micropip)…" });
     await pyodide.loadPackage(["micropip", "matplotlib", "pandas", "scipy"], { messageCallback: onMsg, errorCallback: onMsg });

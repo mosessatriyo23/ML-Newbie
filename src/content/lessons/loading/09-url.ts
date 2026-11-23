@@ -396,9 +396,9 @@ for u in contoh:
     { q: "Ambil domain dari URL dengan Python", a: "urllib.parse.urlparse(url).netloc" },
   ],
   references: [
-    pandasDoc("IO tools — Reading remote files", "user_guide/io.html#reading-remote-files"),
+    pandasDoc("IO tools — Reading remote files", "user_guide/io.html#reading-writing-remote-files"),
     pyDoc("urllib.parse — Parse URLs into components", "library/urllib.parse.html"),
-    { source: "GitHub Docs", title: "Viewing and understanding files — raw file URLs", url: "https://docs.github.com/en/repositories/working-with-files/using-files/viewing-and-understanding-files" },
-    { source: "Google Colaboratory", title: "External data: Local Files, Drive, Sheets, and Cloud Storage", url: "https://colab.research.google.com/notebooks/io.ipynb" },
+    { source: "GitHub Docs (sumber resmi)", title: "Viewing and understanding files — viewing the raw version of a file", url: "https://raw.githubusercontent.com/github/docs/main/content/repositories/working-with-files/using-files/viewing-and-understanding-files.md" },
+    { source: "Google Colab (kode sumber resmi)", title: "googlecolab/colabtools — google/colab/files.py (files.upload & files.download)", url: "https://raw.githubusercontent.com/googlecolab/colabtools/main/google/colab/files.py" },
   ],
 };

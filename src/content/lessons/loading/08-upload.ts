@@ -416,7 +416,7 @@ for nama, isi in files.items():
     { q: "Di mana file unggahan Playground situs ini disimpan?", a: "Di sistem file Python dalam browser selama sesi; tidak dikirim ke server" },
   ],
   references: [
-    { source: "Google Colaboratory", title: "External data: Local Files, Drive, Sheets, and Cloud Storage", url: "https://colab.research.google.com/notebooks/io.ipynb" },
+    { source: "Google Colab (kode sumber resmi)", title: "googlecolab/colabtools — google/colab/files.py (files.upload & files.download)", url: "https://raw.githubusercontent.com/googlecolab/colabtools/main/google/colab/files.py" },
     pyDoc("io — BytesIO and StringIO", "library/io.html"),
     pyDoc("codecs — Standard Encodings", "library/codecs.html#standard-encodings"),
     pandasDoc("pandas.read_csv — encoding parameter", "reference/api/pandas.read_csv.html"),

@@ -424,6 +424,6 @@ print(df)`,
     pandasDoc("IO tools — Excel files", "user_guide/io.html#excel-files"),
     pandasDoc("pandas.read_excel", "reference/api/pandas.read_excel.html"),
     pandasDoc("pandas.ExcelWriter", "reference/api/pandas.ExcelWriter.html"),
-    { source: "openpyxl Documentation", title: "openpyxl — A Python library to read/write Excel 2010 xlsx/xlsm files", url: "https://openpyxl.readthedocs.io/en/stable/" },
+    { source: "Python Package Index (PyPI)", title: "openpyxl — A Python library to read/write Excel 2010 xlsx/xlsm files", url: "https://pypi.org/project/openpyxl/" },
   ],
 };

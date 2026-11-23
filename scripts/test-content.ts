@@ -56,6 +56,7 @@ function cleanFs() {
 async function run(code: string, tests?: PyTest[]): Promise<Res> {
   cleanFs();
   await py.loadPackagesFromImports(code);
+  if (/^\s*(import|from)\s+sklearn/m.test(code)) await py.loadPackage(["pandas"]);
   if (/read_excel|to_excel|ExcelWriter|ExcelFile|^\s*(import|from)\s+openpyxl/m.test(code) && !excel) {
     await py.loadPackage(["micropip", "pandas"]);
     await py.pyimport("micropip").install(["et_xmlfile-2.0.0-py3-none-any.whl", "openpyxl-3.1.5-py2.py3-none-any.whl"].map((w) => pathToFileURL(join(root, "public/wheels", w)).href));

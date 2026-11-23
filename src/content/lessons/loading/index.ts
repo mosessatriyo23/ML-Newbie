@@ -8,5 +8,17 @@ import { lesson as excel } from "./06-excel.ts";
 import { lesson as json } from "./07-json.ts";
 import { lesson as upload } from "./08-upload.ts";
 import { lesson as url } from "./09-url.ts";
+import { lesson as sklearn } from "./10-sklearn.ts";
+import { lesson as colab } from "./11-colab.ts";
+import { lesson as drive } from "./12-drive.ts";
+import { lesson as kaggle } from "./13-kaggle.ts";
+import { lesson as rowsCols } from "./14-rows-cols.ts";
+import { lesson as head } from "./15-head.ts";
+import { lesson as tail } from "./16-tail.ts";
+import { lesson as shape } from "./17-shape.ts";
+import { lesson as columns } from "./18-columns.ts";
+import { lesson as info } from "./19-info.ts";
+import { lesson as dtypes } from "./20-dtypes.ts";
+import { lesson as describe } from "./21-describe.ts";
 
-export const LOADING_LESSONS: Lesson[] = [dataset, featuresTarget, numerical, categorical, csv, excel, json, upload, url];
+export const LOADING_LESSONS: Lesson[] = [dataset, featuresTarget, numerical, categorical, csv, excel, json, upload, url, sklearn, colab, drive, kaggle, rowsCols, head, tail, shape, columns, info, dtypes, describe];

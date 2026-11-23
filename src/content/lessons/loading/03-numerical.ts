@@ -355,7 +355,7 @@ print(hasil.isna().sum())`,
   references: [
     { source: "Google Machine Learning Crash Course", title: "Working with numerical data", url: "https://developers.google.com/machine-learning/crash-course/numerical-data" },
     pandasDoc("pandas.to_numeric", "reference/api/pandas.to_numeric.html"),
-    pandasDoc("IO tools — NA and NaN handling (na_values)", "user_guide/io.html#na-and-nan-handling"),
+    pandasDoc("IO tools — NA and NaN handling (na_values)", "user_guide/io.html#na-values"),
     { source: "OpenIntro Statistics", title: "Chapter 1.2 — Data basics (types of variables)", url: "https://www.openintro.org/book/os/" },
   ],
 };
